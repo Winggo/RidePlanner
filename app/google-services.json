@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "124431436810",
+    "firebase_url": "https://rideplanner2.firebaseio.com",
+    "project_id": "rideplanner2",
+    "storage_bucket": "rideplanner2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124431436810:android:a2667ca99d9692a3",
+        "android_client_info": {
+          "package_name": "com.cmps121.rideplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124431436810-f650vhjjc64c7v8f96vgnv5fjbcqaqea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cmps121.rideplanner",
+            "certificate_hash": "7f015dc622e8f664bfb8935d3dc8a2d0e66121a7"
+          }
+        },
+        {
+          "client_id": "124431436810-64qi5lntr1gah7227td97cladp6ph1q8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTAbttRjKbVuKqdZnEdoBzYAJ1m4DAJQM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124431436810-64qi5lntr1gah7227td97cladp6ph1q8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
