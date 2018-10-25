@@ -19,6 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".GroupMenu" />
+        <activity android:name=".CreatingGroups" />
+        <activity android:name=".YourGroups"></activity>
     </application>
 
 </manifest>
