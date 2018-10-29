@@ -21,7 +21,11 @@
         </activity>
         <activity android:name=".GroupMenu" />
         <activity android:name=".CreatingGroups" />
-        <activity android:name=".YourGroups"></activity>
+        <activity android:name=".YourGroups" />
+        <activity android:name=".CreatingNewGroup" />
+        <activity android:name=".eventDetails" />
+        <activity android:name=".viewAllCars" />
+        <activity android:name=".yourCar"></activity>
     </application>
 
 </manifest>
