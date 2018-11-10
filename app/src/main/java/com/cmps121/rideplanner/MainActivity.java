@@ -7,9 +7,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -17,6 +19,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,29 +32,53 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
+    FirebaseDatabase db = FirebaseDatabase.getInstance();
+    DatabaseReference dbUsers;
+    String userID;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser() != null) {
             // user has already signed in
+            user = FirebaseAuth.getInstance().getCurrentUser();
+            userID = user.getUid();
+            Log.d("USERID:", userID);
+            dbUsers = db.getReference("users");
+            dbUsers.orderByChild("userID").equalTo(userID).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // default value false
+                    Boolean profileCreated = false;
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        profileCreated = data.child("profileCreated").getValue(Boolean.class);
+                        Log.d("ISPROFILE:", profileCreated.toString());
+                    }
+                    // if profile hasnt been created yet, Toast and tell them to set up profile
+                    if (!profileCreated) {
+                        Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
         else {
             createSignInIntent();
         }
+    }
+
+    // route to creating group page. might be able to just set content view. not sure
+    public void onCreateGroup(View view) {
+        Intent intent = new Intent(this, CreatingGroups.class);
+        startActivity(intent);
     }
 
     public void createSignInIntent() {
@@ -75,9 +107,35 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                // ...
+                user = FirebaseAuth.getInstance().getCurrentUser();
+                userID = user.getUid();
+                dbUsers = db.getReference("users");
+                dbUsers.orderByChild("userID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            // we already have the userID. do nothing
+                        }
+                        else {
+                            // add the userID to the user database
+                            String id = dbUsers.push().getKey();
+                            User dbUser = new User(user.getUid(), user.getDisplayName(), false);
+                            dbUsers.child(id).setValue(dbUser);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             } else {
+                if (resultCode == RESULT_CANCELED) {
+                    // do nothing
+                }
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(), response.getError().getMessage(), Toast.LENGTH_SHORT);
+                }
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
