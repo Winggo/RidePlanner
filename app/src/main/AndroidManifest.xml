@@ -22,7 +22,14 @@
         <activity android:name=".GroupMenu" />
         <activity android:name=".CreatingGroups" />
         <activity android:name=".YourGroups" />
+
         <activity android:name=".EditProfile"></activity>
+
+        <activity android:name=".CreatingNewGroup" />
+        <activity android:name=".eventDetails" />
+        <activity android:name=".viewAllCars" />
+        <activity android:name=".yourCar" />
+        <activity android:name=".finalCarScreen"></activity>
     </application>
 
 </manifest>
