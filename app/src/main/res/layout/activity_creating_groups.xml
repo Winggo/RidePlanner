@@ -31,7 +31,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="136dp"
         android:ems="10"
         android:hint="enter emails here"
         android:inputType="textMultiLine"
@@ -47,9 +47,11 @@
         android:layout_height="wrap_content"
         android:text="Header"
         android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/editText3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="31dp"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Create Your Group!" />
 
     <EditText

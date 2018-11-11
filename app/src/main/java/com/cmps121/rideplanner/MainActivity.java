@@ -41,34 +41,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser() != null) {
             // user has already signed in
             user = FirebaseAuth.getInstance().getCurrentUser();
             userID = user.getUid();
-            Log.d("USERID:", userID);
-            dbUsers = db.getReference("users");
-            dbUsers.orderByChild("userID").equalTo(userID).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    // default value false
-                    Boolean profileCreated = false;
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        profileCreated = data.child("profileCreated").getValue(Boolean.class);
-                        Log.d("ISPROFILE:", profileCreated.toString());
-                    }
-                    // if profile hasnt been created yet, Toast and tell them to set up profile
-                    if (!profileCreated) {
-                        Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
         }
         else {
             createSignInIntent();
@@ -78,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
     // route to creating group page. might be able to just set content view. not sure
     public void onCreateGroup(View view) {
         Intent intent = new Intent(this, CreatingGroups.class);
+        startActivity(intent);
+    }
+
+    public void onEditProfile(View view) {
+        Intent intent = new Intent(this, EditProfile.class);
         startActivity(intent);
     }
 
@@ -114,13 +96,20 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()) {
-                            // we already have the userID. do nothing
+                            // we already have the userID. check if the profile has been created or not
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                if (!data.child("profileCreated").getValue(Boolean.class)) {
+                                    Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
                         }
                         else {
                             // add the userID to the user database
                             String id = dbUsers.push().getKey();
                             User dbUser = new User(user.getUid(), user.getDisplayName(), false);
                             dbUsers.child(id).setValue(dbUser);
+                            Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
+
                         }
                     }
 
@@ -134,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     // do nothing
                 }
                 else {
-                    Toast toast = Toast.makeText(getApplicationContext(), response.getError().getMessage(), Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(), response.getError().getMessage(), Toast.LENGTH_SHORT);
                 }
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check

@@ -21,7 +21,8 @@
         </activity>
         <activity android:name=".GroupMenu" />
         <activity android:name=".CreatingGroups" />
-        <activity android:name=".YourGroups"></activity>
+        <activity android:name=".YourGroups" />
+        <activity android:name=".EditProfile"></activity>
     </application>
 
 </manifest>

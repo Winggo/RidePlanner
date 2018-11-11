@@ -37,7 +37,5 @@ public class User {
         return userAddress;
     }
 
-    public Boolean getProfileCreated() {
-        return profileCreated;
-    }
+    public Boolean getProfileCreated() { return profileCreated; }
 }
