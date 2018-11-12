@@ -22,6 +22,7 @@
         <activity android:name=".GroupMenu" />
         <activity android:name=".CreatingGroups" />
         <activity android:name=".YourGroups" />
+<!--<<<<<<< HEAD-->
 
         <activity android:name=".EditProfile"></activity>
 
@@ -30,6 +31,8 @@
         <activity android:name=".viewAllCars" />
         <activity android:name=".yourCar" />
         <activity android:name=".finalCarScreen"></activity>
+<!--=======-->
+<!--&gt;>>>>>> dev-->
     </application>
 
 </manifest>
