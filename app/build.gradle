@@ -20,6 +20,7 @@ android {
 }
 
 dependencies {
+//    vectorDrawables.useSupportLibrary = true
     implementation 'com.google.firebase:firebase-auth:16.0.5'
     implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -41,5 +42,3 @@ dependencies {
 
 apply plugin: 'com.google.gms.google-services'
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
-
-
