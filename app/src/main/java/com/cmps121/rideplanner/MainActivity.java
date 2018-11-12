@@ -27,7 +27,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -107,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             // add the userID to the user database
                             String id = dbUsers.push().getKey();
-                            User dbUser = new User(user.getUid(), user.getDisplayName(), false);
+                            HashMap<String, Boolean> tempMap = new HashMap<>();
+                            //tempMap.put("defaultUserGroup", false);
+                            User dbUser = new User(user.getUid(), user.getDisplayName(), false, tempMap);
                             dbUsers.child(id).setValue(dbUser);
                             Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
 
