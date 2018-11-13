@@ -40,6 +40,13 @@ public class User {
         return closer;
 
     }
+
+    public ArrayList<Double> setCloserAddress(double c){
+        closer.add(c);
+        return closer;
+
+    }
+
     public String setUserID(String set){
         return userID =  set;
     }

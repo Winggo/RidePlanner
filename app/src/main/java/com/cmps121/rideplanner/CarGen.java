@@ -62,17 +62,31 @@ public class CarGen  extends AsyncTask<String, Void, String> {
         uInfo4.setUserPhoneNumber("911"); //set the phone_num
         return "";
         }
-    public void saveImage(Context context, Bitmap b, String imageName) {
-        FileOutputStream foStream;
-        try {
-            foStream = context.openFileOutput(imageName, Context.MODE_PRIVATE);
-            b.compress(Bitmap.CompressFormat.PNG, 100, foStream);
-            foStream.close();
-        } catch (Exception e) {
-            Log.d("saveImage", "Exception 2, Something went wrong!");
-            e.printStackTrace();
+
+
+        public something sortGetLowest(){
+            profiles.add(uInfo1);
+            profiles.add(uInfo2);
+            profiles.add(uInfo3);
+            profiles.add(uInfo4);
+            profiles.add(uInfo);
+            double holder;
+
+            //get the amount of distance and holding the next cloest person
+        for(int i = 0; i<profiles.size();i++){
+            for(int j = 0; j<profiles.size();j++) {
+                holder = Integer.parseDouble(profiles.get(j).getUserAddress());
+                profiles.get(i).setCloserAddress(holder);
+            }
         }
-    }
+
+        for(int i = 0; i<profiles.size();i++){
+        //quicksort(each array in them)
+        }
+
+        //then start throwing people into the cars
+            // look for the smallest arraylist that has lowest distance betwen the users
+            // and then work from there for rides
 
 //     public String getUserID() {
 //        return userID;
@@ -130,11 +144,7 @@ public class CarGen  extends AsyncTask<String, Void, String> {
 //        getImage.pathholder = makepath+".jpg";
 //////        MainActivity.imageView.setImageBitmap(bitmap);
 
-            profiles.add(uInfo1);
-            profiles.add(uInfo2);
-            profiles.add(uInfo3);
-            profiles.add(uInfo4);
-            profiles.add(uInfo);
+
             }
 
 
