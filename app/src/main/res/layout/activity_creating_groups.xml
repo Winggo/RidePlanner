@@ -7,57 +7,48 @@
     tools:context=".CreatingGroups">
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/createBtn"
         android:layout_width="197dp"
         android:layout_height="61dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="create"
+        android:background="@color/colorPrimaryDark"
+        android:fontFamily="@font/heebo_thin"
+        android:onClick="onCreateBtn"
+        android:text="Create"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.981"
+
+        app:layout_constraintVertical_bias="0.917"
         tools:text="Create" />
 
-    <EditText
-        android:id="@+id/editText"
-        style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
-        android:layout_width="310dp"
-        android:layout_height="183dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="136dp"
-        android:ems="10"
-        android:hint="enter emails here"
-        android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.596" />
-
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/Header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Header"
+
+        android:gravity="center_horizontal"
+        android:text="Create Your Group!"
+        android:fontFamily="@font/heebo_thin"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/editText3"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/groupField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Create Your Group!" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/groupField"
         android:layout_width="wrap_content"
-        android:layout_height="57dp"
+        android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -65,13 +56,59 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
+        android:fontFamily="@font/heebo_thin"
+        android:gravity="center_horizontal"
         android:hint="Enter Group Name here"
         android:inputType="textPersonName"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.242" />
+
+    <TextView
+        android:id="@+id/groupCode"
+        android:layout_width="276dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="TextView"
+        android:textSize="18sp"
+        android:visibility="gone"
+        android:textIsSelectable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shareTitle"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/shareTitle"
+        android:layout_width="162dp"
+        android:layout_height="33dp"
+        android:text="Your Group Code Is:"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/groupCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupField" />
+
+    <TextView
+        android:id="@+id/shareText"
+        android:layout_width="136dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="Share this code with your friends so that they can join!"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupCode" />
 
 </android.support.constraint.ConstraintLayout>

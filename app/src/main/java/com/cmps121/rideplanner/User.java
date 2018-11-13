@@ -1,6 +1,10 @@
 package com.cmps121.rideplanner;
 
+
 import java.util.ArrayList;
+
+import java.util.HashMap;
+
 
 public class User {
     String userID;
@@ -8,25 +12,28 @@ public class User {
     String userPhoneNumber;
     static String userAddress;
     Boolean profileCreated;
+    HashMap<String, Boolean> groups;
     //stores the closer people from least to greatest
-  static  ArrayList<User> closer;
+    static  ArrayList<User> closer;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String userID, String userName, Boolean profileCreated) {
+    public User(String userID, String userName, Boolean profileCreated, HashMap<String, Boolean> groups) {
         this.profileCreated = profileCreated;
         this.userID = userID;
         this.userName = userName;
+        this.groups = groups;
     }
 
-    public User(String userID, String userName, String userPhoneNumber, String userAddress, Boolean profileCreated) {
+    public User(String userID, String userName, String userPhoneNumber, String userAddress, Boolean profileCreated, HashMap<String, Boolean> groups) {
         this.userID = userID;
         this.userName = userName;
         this.userAddress = userAddress;
         this.userPhoneNumber = userPhoneNumber;
         this.profileCreated = profileCreated;
+        this.groups = groups;
     }
     // uInfo.setID(ds.child("Admin").getValue(User.class).getName()); //set the name
     //            uInfo.setAddress(ds.child("Admin").getValue(User.class).getEmail()); //set the email

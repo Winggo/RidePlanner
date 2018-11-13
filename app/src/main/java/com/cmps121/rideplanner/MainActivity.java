@@ -27,7 +27,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,6 +60,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onJoinGroup(View view) {
+        Intent intent = new Intent(this, JoiningGroups.class);
+        startActivity(intent);
+    }
+
+    public void onViewGroups(View view) {
+        Intent intent = new Intent(this, ViewGroups.class);
+        startActivity(intent);
+    }
+
     public void onEditProfile(View view) {
         Intent intent = new Intent(this, EditProfile.class);
         startActivity(intent);
@@ -74,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setTheme(R.style.AppTheme)
+                        .setTheme(R.style.PersonalTheme)
                         .setLogo(R.mipmap.rpe)
                         .setAvailableProviders(providers)
                         .build(),
@@ -106,9 +118,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else {
                             // add the userID to the user database
-                            String id = dbUsers.push().getKey();
-                            User dbUser = new User(user.getUid(), user.getDisplayName(), false);
-                            dbUsers.child(id).setValue(dbUser);
+
+                            HashMap<String, Boolean> tempMap = new HashMap<>();
+
+                            User dbUser = new User(user.getUid(), user.getDisplayName(), false, tempMap);
+                            dbUsers.child(user.getUid()).setValue(dbUser);
                             Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
 
                         }
