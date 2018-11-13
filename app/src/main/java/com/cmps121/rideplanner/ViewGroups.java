@@ -1,12 +1,15 @@
 package com.cmps121.rideplanner;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -83,7 +86,18 @@ public class ViewGroups extends AppCompatActivity implements AdapterView.OnItemC
                 }
 
                 // display this list
-                ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, groups);
+                ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, groups) {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        View view = super.getView(position, convertView, parent);
+                        TextView text = (TextView)view.findViewById(android.R.id.text1);
+                        text.setTextColor(getResources().getColor(R.color.featuresColor));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            text.setTypeface(getResources().getFont(R.font.heebo_thin));
+                        }
+                        return view;
+                    }
+                };
                 groupList.setAdapter(adapter);
             }
 
@@ -108,4 +122,5 @@ public class ViewGroups extends AppCompatActivity implements AdapterView.OnItemC
         intent.putExtra("groupClicked", groupClicked);
         startActivity(intent);
     }
+
 }
