@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setTheme(R.style.AppTheme)
+                        .setTheme(R.style.PersonalTheme)
                         .setLogo(R.mipmap.rpe)
                         .setAvailableProviders(providers)
                         .build(),
