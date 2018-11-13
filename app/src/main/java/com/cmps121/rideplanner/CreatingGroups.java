@@ -1,5 +1,8 @@
 package com.cmps121.rideplanner;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,9 +36,11 @@ public class CreatingGroups extends AppCompatActivity {
     TextView shareTitle;
     TextView groupCode;
     TextView shareText;
+    Button copy;
 
     String groupName;
     String userID;
+    String groupID = "";
 
     GenericTypeIndicator<Map<String, Map<String, Map<String, Boolean>>>> genericTypeIndicator;
     Map<String, Map<String, Map<String, Boolean>>> groups;
@@ -61,6 +66,8 @@ public class CreatingGroups extends AppCompatActivity {
         shareTitle = (TextView) findViewById(R.id.shareTitle);
         shareText = (TextView) findViewById(R.id.shareText);
         groupCode = (TextView) findViewById(R.id.codeHeader);
+        groupCode = (TextView) findViewById(R.id.groupCode);
+        copy = (Button) findViewById(R.id.copy);
 
         createButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -71,9 +78,9 @@ public class CreatingGroups extends AppCompatActivity {
 
     public void onCreateBtn(View view) {
         groupName = groupInput.getText().toString();
-        String groupID = dbGroups.push().getKey();
+        groupID = dbGroups.push().getKey();
 
-        if (groupName == null || !groupName.matches("^[a-zA-Z0-9]+$") || groupName.isEmpty()) {
+        if (groupName == null || !groupName.matches("^[a-zA-Z0-9 ]+$") || groupName.isEmpty()) {
             finish();
             startActivity(getIntent());
             Toast.makeText(getApplicationContext(), "Please only use letters and numbers in your group name!", Toast.LENGTH_LONG).show();
@@ -124,7 +131,16 @@ public class CreatingGroups extends AppCompatActivity {
             shareTitle.setVisibility(View.VISIBLE);
             groupCode.setVisibility(View.VISIBLE);
             shareText.setVisibility(View.VISIBLE);
+            copy.setVisibility(View.VISIBLE);
 
         }
+    }
+
+    public void copyText(View view) {
+        ClipboardManager cb = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("groupID", groupID);
+        cb.setPrimaryClip(clip);
+
+        Toast.makeText(this,"Code copied onto clipboard", Toast.LENGTH_SHORT).show();
     }
 }

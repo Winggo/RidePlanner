@@ -4,14 +4,14 @@
     <!--Snow-->
     <color name="colorPrimary">#FFFAFA</color>
     <!--Eerie black-->
-    <color name="colorPrimaryDark">#1B1B1B</color>
+    <color name="colorPrimaryDark">#1b1b1b</color>
     <!--Glacier Blue-->
-    <color name="featuresColor">#336699</color>
+    <color id="glacier" name="featuresColor">#336699</color>
 
     <!--colorControlNormal-->
-    <color name="colorControl">#669999</color>
+    <color name="colorControl">#cc3300</color>
     <!--colorControlActivated-->
-    <color name="colorActivated">#cc3300</color>
+    <color name="colorActivated">#669999</color>
     <!--colorControlHighlight-->
     <color name="colorHighlight">#ffffcc</color>
     <!--windowBackground-->
