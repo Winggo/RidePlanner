@@ -1,5 +1,6 @@
 package com.cmps121.rideplanner;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,12 +32,18 @@ public class JoiningGroups extends AppCompatActivity {
 
     EditText codeInput;
 
+    GenericTypeIndicator<Map<String, Map<String, Map<String, Boolean>>>> genericTypeIndicator2;
+
     GenericTypeIndicator<Map<String, Boolean>> genericTypeIndicator;
+    Map<String, Map<String, Map<String, Boolean>>> groups;
 
     Boolean foundGroup;
     Button joinButton;
     String groupCode;
     String groupName;
+
+    Map<String, Map<String, Boolean>> events;
+    Map<String, Boolean> tempEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,7 @@ public class JoiningGroups extends AppCompatActivity {
         db = FirebaseDatabase.getInstance();
         dbGroups = db.getReference("groups");
         genericTypeIndicator = new GenericTypeIndicator<Map<String, Boolean>>() {};
+        genericTypeIndicator2 = new GenericTypeIndicator<Map<String, Map<String, Map<String, Boolean>>>>() {};
 
         foundGroup = false;
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -59,6 +67,11 @@ public class JoiningGroups extends AppCompatActivity {
                 onJoinButton(view);
             }
         });
+
+        events = new HashMap<>();
+        tempEvents = new HashMap<>();
+        groups = new HashMap<>();
+
     }
 
     public void onJoinButton(View view) {
@@ -96,13 +109,27 @@ public class JoiningGroups extends AppCompatActivity {
                     ValueEventListener userValueEventListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Map<String, Boolean> groups = new HashMap<>();
+                          //  Map<String, Boolean> groups = new HashMap<>();
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                if (ds.child("groups").getValue(genericTypeIndicator) != null) {
-                                    groups = ds.child("groups").getValue(genericTypeIndicator);
+
+                                if (ds.child("groups").getValue(genericTypeIndicator2) != null) {
+                                    groups = ds.child("groups").getValue(genericTypeIndicator2);
+                                    tempEvents.put("init", false);
+                                    events.put("events", tempEvents);
+                                    groups.put(groupName, events);
+                                    ds.getRef().child("groups").setValue(groups);
                                 }
-                                groups.put(groupName, true);
-                                ds.getRef().child("groups").setValue(groups);
+                                else {
+                                    tempEvents.put("init", false);
+                                    ds.child("groups").getRef().child(groupName).child("events").setValue(tempEvents);
+                                }
+                             /*   groups.put(groupName, true);
+                                ds.getRef().child("groups").setValue(groups);*/
+
+                                Intent intent = new Intent(getApplicationContext(), GroupPage.class);
+                                intent.putExtra("groupClicked", groupName);
+                                startActivity(intent);
+
                             }
                         }
 

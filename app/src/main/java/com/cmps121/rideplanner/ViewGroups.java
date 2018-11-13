@@ -92,9 +92,9 @@ public class ViewGroups extends AppCompatActivity implements AdapterView.OnItemC
                         View view = super.getView(position, convertView, parent);
                         TextView text = (TextView)view.findViewById(android.R.id.text1);
                         text.setTextColor(getResources().getColor(R.color.featuresColor));
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             text.setTypeface(getResources().getFont(R.font.heebo_thin));
-                        }
+                        }*/
                         return view;
                     }
                 };

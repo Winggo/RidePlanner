@@ -1,5 +1,6 @@
 package com.cmps121.rideplanner;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -91,6 +92,10 @@ public class CreateEventPopUp extends AppCompatActivity {
                     events.put(eventName, true);
                     ds.getRef().child("groups").child(groupName).child("events").setValue(events);
                 }
+                Intent intent = new Intent(getApplicationContext(), ViewEvents.class);
+                intent.putExtra("groupName", groupName);
+                intent.putExtra("groupCode", groupCode);
+                startActivity(intent);
             }
 
             @Override

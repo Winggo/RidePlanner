@@ -53,16 +53,20 @@
         <activity
             android:name=".CreateEventPopUp"
             android:theme="@style/Theme.AppCompat.Dialog" />
-
-        <activity android:name=".ViewEvents"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".EventPage"
+        <activity
+            android:name=".ViewEvents"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EventPage"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".ViewMembers"
+            android:theme="@style/Theme.AppCompat.Dialog" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
 
     </application>
 
