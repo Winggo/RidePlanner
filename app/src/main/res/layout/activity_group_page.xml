@@ -25,9 +25,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:onClick="onCreateEvent"
         android:background="@color/colorPrimaryDark"
         android:fontFamily="@font/heebo_thin"
+        android:onClick="onCreateEvent"
         android:text="Create Event"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimary"
@@ -43,9 +43,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:onClick="onViewEvents"
         android:background="@color/colorPrimaryDark"
         android:fontFamily="@font/heebo_thin"
+        android:onClick="onViewEvents"
         android:text="View Your Events"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimary"
@@ -54,5 +54,18 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createEventBtn" />
+
+    <Button
+        android:id="@+id/viewMembersBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:onClick="onViewMembers"
+        android:text="View Members"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewEventsBtn" />
 
 </android.support.constraint.ConstraintLayout>

@@ -66,4 +66,11 @@ public class GroupPage extends AppCompatActivity {
         intent.putExtra("groupCode", groupCode);
         startActivity(intent);
     }
+
+    public void onViewMembers(View view) {
+        Intent intent = new Intent(this, ViewMembers.class);
+        intent.putExtra("groupName", groupName);
+        intent.putExtra("groupCode", groupCode);
+        startActivity(intent);
+    }
 }

@@ -88,7 +88,9 @@ public class ViewEvents extends AppCompatActivity implements AdapterView.OnItemC
                     // loop through all the keys and add it to groups ArrayList for display
 
                     for (String key : eventsMap.keySet()) {
-                        events.add(key);
+                        if(eventsMap.get(key) == true) {
+                            events.add(key);
+                        }
                     }
                 }
 
