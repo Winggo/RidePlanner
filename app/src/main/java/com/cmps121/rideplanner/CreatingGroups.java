@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,44 +70,50 @@ public class CreatingGroups extends AppCompatActivity {
     public void onCreateBtn(View view) {
         groupName = groupInput.getText().toString();
         String groupID = dbGroups.push().getKey();
-        groupCode.setText(groupID);
-        Map<String, Boolean> members = new HashMap<>();
-        members.put(userID, true);
 
-        Group group = new Group(groupName, groupID);
-        dbGroups.child(groupID).setValue(group);
-        dbGroups.child(groupID).child("members").setValue(members);
+        if (groupName == null || !groupName.matches("^[a-zA-Z0-9]+$") || groupName.isEmpty()) {
+            finish();
+            startActivity(getIntent());
+            Toast.makeText(getApplicationContext(), "Please only use letters and numbers in your group name!", Toast.LENGTH_LONG).show();
+        } else {
 
-      //  groups = new HashMap<String, Boolean>();
+            groupCode.setText(groupID);
+            Map<String, Boolean> members = new HashMap<>();
+            members.put(userID, true);
 
-        Query query = FirebaseDatabase.getInstance().getReference("users")
-                .orderByChild("userID")
-                .equalTo(userID);
+            Group group = new Group(groupName, groupID);
+            dbGroups.child(groupID).setValue(group);
+            dbGroups.child(groupID).child("members").setValue(members);
 
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if (ds.child("groups").getValue(genericTypeIndicator) != null) {
-                        groups = ds.child("groups").getValue(genericTypeIndicator);
+            Query query = FirebaseDatabase.getInstance().getReference("users")
+                    .orderByChild("userID")
+                    .equalTo(userID);
+
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        if (ds.child("groups").getValue(genericTypeIndicator) != null) {
+                            groups = ds.child("groups").getValue(genericTypeIndicator);
+                        }
+                        groups.put(groupName, true);
+                        ds.getRef().child("groups").setValue(groups);
                     }
-                    groups.put(groupName, true);
-                    ds.getRef().child("groups").setValue(groups);
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        };
+                }
+            };
 
-        query.addListenerForSingleValueEvent(valueEventListener);
+            query.addListenerForSingleValueEvent(valueEventListener);
 
-        // set all the views as visible and display the group code
-        shareTitle.setVisibility(View.VISIBLE);
-        groupCode.setVisibility(View.VISIBLE);
-        shareText.setVisibility(View.VISIBLE);
+            // set all the views as visible and display the group code
+            shareTitle.setVisibility(View.VISIBLE);
+            groupCode.setVisibility(View.VISIBLE);
+            shareText.setVisibility(View.VISIBLE);
 
+        }
     }
 }

@@ -60,6 +60,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onJoinGroup(View view) {
+        Intent intent = new Intent(this, JoiningGroups.class);
+        startActivity(intent);
+    }
+
+    public void onViewGroups(View view) {
+        Intent intent = new Intent(this, ViewGroups.class);
+        startActivity(intent);
+    }
+
     public void onEditProfile(View view) {
         Intent intent = new Intent(this, EditProfile.class);
         startActivity(intent);
@@ -108,11 +118,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else {
                             // add the userID to the user database
-                            String id = dbUsers.push().getKey();
+
                             HashMap<String, Boolean> tempMap = new HashMap<>();
-                            //tempMap.put("defaultUserGroup", false);
+
                             User dbUser = new User(user.getUid(), user.getDisplayName(), false, tempMap);
-                            dbUsers.child(id).setValue(dbUser);
+                            dbUsers.child(user.getUid()).setValue(dbUser);
                             Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
 
                         }
