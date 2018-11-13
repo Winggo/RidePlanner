@@ -1,11 +1,14 @@
 package com.cmps121.rideplanner;
 
+import java.util.ArrayList;
+
 public class User {
     String userID;
     String userName;
     String userPhoneNumber;
     String userAddress;
     Boolean profileCreated;
+    ArrayList<Double> closer;
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
@@ -31,6 +34,12 @@ public class User {
         return userID;
     }
 
+
+
+    public ArrayList<Double> getCloserAddress(){
+        return closer;
+
+    }
     public String setUserID(String set){
         return userID =  set;
     }
@@ -38,7 +47,7 @@ public class User {
     public String getUserName() {
         return userName;
     }
-    public String setUserMame(String set){
+    public String setUserName(String set){
         return userName = set;
     }
 
