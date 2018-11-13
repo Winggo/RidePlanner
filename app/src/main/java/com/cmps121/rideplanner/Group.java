@@ -3,7 +3,6 @@ package com.cmps121.rideplanner;
 import java.util.ArrayList;
 
 public class Group {
-
     private String groupName;
     private String groupCode;
 

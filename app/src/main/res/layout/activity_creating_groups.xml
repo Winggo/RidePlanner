@@ -88,6 +88,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/codeHeader"
+        android:layout_width="276dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/heebo_thin"
+        android:gravity="center_horizontal"
+        android:text="TextView"
+        android:textColor="@color/colorPrimaryDark"
+        android:textIsSelectable="true"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shareTitle"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/shareTitle"
         android:layout_width="162dp"
         android:layout_height="33dp"
@@ -96,7 +115,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/groupCode"
+        app:layout_constraintBottom_toTopOf="@+id/codeHeader"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +134,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupCode" />
+        app:layout_constraintTop_toBottomOf="@+id/codeHeader" />
 
     <Button
         android:id="@+id/copy"

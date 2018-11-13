@@ -42,25 +42,30 @@ public class CreatingGroups extends AppCompatActivity {
     String userID;
     String groupID = "";
 
-    GenericTypeIndicator<Map<String, Boolean>> genericTypeIndicator;
-    Map<String, Boolean> groups;
+    GenericTypeIndicator<Map<String, Map<String, Map<String, Boolean>>>> genericTypeIndicator;
+    Map<String, Map<String, Map<String, Boolean>>> groups;
+    Map<String, Map<String, Boolean>> events;
+    Map<String, Boolean> tempEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creating_groups);
-        genericTypeIndicator = new GenericTypeIndicator<Map<String, Boolean>>() {};
+        genericTypeIndicator = new GenericTypeIndicator<Map<String, Map<String, Map<String, Boolean>>>>() {};
 
         db = FirebaseDatabase.getInstance();
         dbGroups = db.getReference("groups");
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID = user.getUid();
         groups = new HashMap<>();
+        events = new HashMap<>();
+        tempEvents = new HashMap<>();
 
         groupInput = (EditText) findViewById(R.id.groupField);
         createButton = (Button) findViewById(R.id.createBtn);
         shareTitle = (TextView) findViewById(R.id.shareTitle);
         shareText = (TextView) findViewById(R.id.shareText);
+        groupCode = (TextView) findViewById(R.id.codeHeader);
         groupCode = (TextView) findViewById(R.id.groupCode);
         copy = (Button) findViewById(R.id.copy);
 
@@ -75,7 +80,7 @@ public class CreatingGroups extends AppCompatActivity {
         groupName = groupInput.getText().toString();
         groupID = dbGroups.push().getKey();
 
-        if (groupName == null || !groupName.matches("^[a-zA-Z0-9]+$") || groupName.isEmpty()) {
+        if (groupName == null || !groupName.matches("^[a-zA-Z0-9 ]+$") || groupName.isEmpty()) {
             finish();
             startActivity(getIntent());
             Toast.makeText(getApplicationContext(), "Please only use letters and numbers in your group name!", Toast.LENGTH_LONG).show();
@@ -83,6 +88,7 @@ public class CreatingGroups extends AppCompatActivity {
 
             groupCode.setText(groupID);
             Map<String, Boolean> members = new HashMap<>();
+
             members.put(userID, true);
 
             Group group = new Group(groupName, groupID);
@@ -97,11 +103,19 @@ public class CreatingGroups extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Log.d("Debugg", "in for loop");
                         if (ds.child("groups").getValue(genericTypeIndicator) != null) {
+                            Log.d("Debugg", "in if statement");
                             groups = ds.child("groups").getValue(genericTypeIndicator);
+                            tempEvents.put("init", false);
+                            events.put("events", tempEvents);
+                            groups.put(groupName, events);
+                            ds.getRef().child("groups").setValue(groups);
                         }
-                        groups.put(groupName, true);
-                        ds.getRef().child("groups").setValue(groups);
+                        else {
+                            tempEvents.put("init", false);
+                            ds.child("groups").getRef().child(groupName).child("events").setValue(tempEvents);
+                        }
                     }
                 }
 
