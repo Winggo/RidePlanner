@@ -19,23 +19,51 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreatingGroups" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".CreatingGroups"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!-- <<<<<<< HEAD -->
 
-        <activity android:name=".EditProfile" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".eventDetails" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".viewAllCars" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".yourCar" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".finalCarScreen" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".EditProfile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".eventDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".viewAllCars"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".yourCar"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".finalCarScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!-- ======= -->
         <!-- &gt;>>>>>> dev -->
-        <activity android:name=".JoiningGroups" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ViewGroups" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".GroupPage" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".JoiningGroups"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewGroups"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GroupPage"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreateEventPopUp"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+
+        <activity android:name=".ViewEvents"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".EventPage"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

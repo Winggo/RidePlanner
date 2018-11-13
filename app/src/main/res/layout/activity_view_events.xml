@@ -4,42 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GroupPage">
+    tools:context=".ViewEvents">
 
     <TextView
-        android:id="@+id/groupName"
+        android:id="@+id/groupTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="30sp"
+        android:layout_marginTop="25dp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/createEventBtn"
+    <TextView
+        android:id="@+id/yourEventsHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:onClick="onCreateEvent"
-        android:text="Create Event"
+        android:layout_marginTop="10dp"
+        android:text="Your Events"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupName" />
+        app:layout_constraintTop_toBottomOf="@+id/groupTitle" />
 
-    <Button
-        android:id="@+id/viewEventsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:onClick="onViewEvents"
-        android:text="View Your Events"
+    <ListView
+        android:id="@+id/eventList"
+        android:layout_width="368dp"
+        android:layout_height="401dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createEventBtn" />
-
+        app:layout_constraintTop_toBottomOf="@+id/yourEventsHeader" />
 </android.support.constraint.ConstraintLayout>

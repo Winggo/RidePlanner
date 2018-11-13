@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Group {
 
-    String groupName;
-    String groupCode;
+    public String groupName;
+    public String groupCode;
 
     public Group (String groupName, String groupCode) {
         this.groupName = groupName;
