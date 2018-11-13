@@ -1,6 +1,7 @@
 package com.cmps121.rideplanner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -149,6 +151,11 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         };
 
         query.addListenerForSingleValueEvent(valueEventListener);
+
+        Toast.makeText(this, "Successful!", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     // onClick method to handle all button clicks

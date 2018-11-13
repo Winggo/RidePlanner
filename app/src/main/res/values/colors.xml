@@ -5,7 +5,17 @@
     <color name="colorPrimary">#FFFAFA</color>
     <!--Eerie black-->
     <color name="colorPrimaryDark">#1B1B1B</color>
-    <!--Salamander-->
-    <color name="featuresColor">#F05E23</color>
+    <!--Glacier Blue-->
+    <color name="featuresColor">#336699</color>
+
+    <!--colorControlNormal-->
+    <color name="colorControl">#669999</color>
+    <!--colorControlActivated-->
+    <color name="colorActivated">#cc3300</color>
+    <!--colorControlHighlight-->
+    <color name="colorHighlight">#ffffcc</color>
+    <!--windowBackground-->
+    <color name="windowBackground">#FFFAFA</color>
+
 
 </resources>

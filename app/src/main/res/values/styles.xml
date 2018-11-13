@@ -13,6 +13,21 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="PersonalTheme" parent="FirebaseUI">
+        <!-- Required for sign-in flow styling -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/featuresColor</item>
+
+        <item name="colorControlNormal">@color/colorControl</item>
+        <item name="colorControlActivated">@color/colorActivated</item>
+        <item name="colorControlHighlight">@color/colorHighlight</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -21,9 +36,9 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:padding">100dp</item>
-        <item name="android:minWidth">200dp</item>
-        <item name="android:minHeight">200dp</item>
+        <item name="android:paddingTop">100dp</item>
+        <item name="android:minWidth">280dp</item>
+        <item name="android:minHeight">280dp</item>
     </style>
 
 </resources>
