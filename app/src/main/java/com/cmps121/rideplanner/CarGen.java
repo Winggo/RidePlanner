@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class CarGen  extends AsyncTask<String, Void, String> {
@@ -38,53 +40,113 @@ public class CarGen  extends AsyncTask<String, Void, String> {
 //        for (DataSnapshot ds : dataSnapshot.getChildren()) {
 //            User uInfo = new User();
             uInfo.setUserID("awefwaefewf"); //set the name
-            uInfo.setUserAddress("702 College Nine Road, Santa Cruz"); //set the email
+            uInfo.setUserAddress(""+3;  //set the email
             uInfo.setUserName("TinTin");
             uInfo.setUserPhoneNumber("911"); //set the phone_num
 
 //            User uInfo1 = new User();
-        uInfo1.setUserAddress("123 Pacific Avenue, Santa Cruz"); //set the email
+        uInfo1.setUserAddress(""+6); //set the email
         uInfo1.setUserName("TinTin");
         uInfo1.setUserPhoneNumber("911"); //set the phone_num
 
 //            User uInfo2 = new User();
-        uInfo2.setUserAddress("123 Mission Street, Santa Cruz"); //set the email
+        uInfo2.setUserAddress((""+2)); //set the email
         uInfo2.setUserName("TinTin");
         uInfo2.setUserPhoneNumber("911"); //set the phone_num
 
-        uInfo3.setUserAddress("106 Peach Terrace, Santa Cruz"); //set the email
+        uInfo3.setUserAddress((""+10)); //set the email
         uInfo3.setUserName("TinTin");
         uInfo3.setUserPhoneNumber("911"); //set the phone_num
 
 
         uInfo4.setUserAddress("107 Nobel Drive, Santa Cruz"); //set the email
+        uInfo4.setUserAddress(""+1); //set the email
         uInfo4.setUserName("TinTin");
         uInfo4.setUserPhoneNumber("911"); //set the phone_num
         return "";
         }
 
 
-        public something sortGetLowest(){
+        public ArrayList<User> sortGetLowest() {
             profiles.add(uInfo1);
             profiles.add(uInfo2);
             profiles.add(uInfo3);
             profiles.add(uInfo4);
             profiles.add(uInfo);
             double holder;
+            User publica;
 
             //get the amount of distance and holding the next cloest person
-        for(int i = 0; i<profiles.size();i++){
-            for(int j = 0; j<profiles.size();j++) {
-                holder = Integer.parseDouble(profiles.get(j).getUserAddress());
-                profiles.get(i).setCloserAddress(holder);
+            for (int i = 0; i < profiles.size(); i++) {
+                for (int j = 0; j < profiles.size(); j++) {
+//                    holder = Integer.parseDouble(profiles.get(j).getUserAddress());
+                    publica = profiles.get(j);
+//                    profiles.get(i).setCloserAddress(holder);
+                    profiles.get(i).setCloserAddress(publica);
+                }
             }
-        }
+            Integer [] bar;
+            User [] bar1;
+            for (int i = 0; i < profiles.size(); i++) {
+//                profiles.get(i).setCloserAddress(i);
+//                bar = profiles.get(i).getCloserAddress().toArray(new Integer[profiles.size()]);
+                bar1 = profiles.get(i).getCloserAddress().toArray(new User[profiles.size()]);
+                sort(bar1, 0, bar1.length-1);
+            }
 
-        for(int i = 0; i<profiles.size();i++){
-        //quicksort(each array in them)
-        }
+            ArrayList<User> arrayList = new ArrayList<User>(Arrays.asList(bar1));
+            return arrayList;
 
-        //then start throwing people into the cars
+        }
+        int partition(User[] arr, int low, int high)
+            {
+                int pivot = Integer.parseInt(arr[high].getUserAddress());
+                int i = (low-1); // index of smaller element
+                for (int j=low; j<high; j++)
+                {
+                    // If current element is smaller than or
+                    // equal to pivot
+                    if (Integer.parseInt(arr[j].getUserAddress()) <= pivot)
+                    {
+                        i++;
+
+                        // swap arr[i] and arr[j]
+                        int temp = Integer.parseInt(arr[i].getUserAddress());
+                        int tempi =  Integer.parseInt(arr[i].getUserAddress());
+                        arr[i].setUserAddress(Integer.parseInt(arr[high].getUserAddress(j)));
+                        Integer.parseInt(arr[high].getUserAddress(j))= temp;
+                    }
+                }
+
+                // swap arr[i+1] and arr[high] (or pivot)
+                int temp = arr[i+1];
+                arr[i+1] = arr[high];
+                arr[high] = temp;
+
+                return i+1;
+            }
+
+
+    /* The main function that implements QuickSort()
+      arr[] --> Array to be sorted,
+      low  --> Starting index,
+      high  --> Ending index */
+    void sort(User arr[], int low, int high)
+            {
+                if (low < high)
+                {
+            /* pi is partitioning index, arr[pi] is
+              now at right place */
+                    int pi = partition(arr, low, high);
+
+                    // Recursively sort elements before
+                    // partition and after partition
+                    sort(arr, low, pi-1);
+                    sort(arr, pi+1, high);
+                }
+            }
+
+            //then start throwing people into the cars
             // look for the smallest arraylist that has lowest distance betwen the users
             // and then work from there for rides
 
@@ -132,8 +194,10 @@ public class CarGen  extends AsyncTask<String, Void, String> {
 //        }
 //
 //    }
+        public void letsGetCars(ArrayList<Double>){
 
 
+        }
 
     @Override
     protected void onPostExecute(String help) {

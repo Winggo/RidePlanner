@@ -6,9 +6,10 @@ public class User {
     String userID;
     String userName;
     String userPhoneNumber;
-    String userAddress;
+    static String userAddress;
     Boolean profileCreated;
-    ArrayList<Double> closer;
+  static  ArrayList<User> closer;
+
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
@@ -36,16 +37,21 @@ public class User {
 
 
 
-    public ArrayList<Double> getCloserAddress(){
+    public static ArrayList<User> getCloserAddress(){
         return closer;
 
     }
 
-    public ArrayList<Double> setCloserAddress(double c){
+    public static void setCloserAddress(User c){
         closer.add(c);
-        return closer;
+//        return closer;
 
     }
+//    public void setcloserride(double c){
+//        User.setCloserAddress(c);
+//
+//    }
+
 
     public String setUserID(String set){
         return userID =  set;
@@ -66,11 +72,11 @@ public class User {
         userID = set;
         return userID;
     }
-    public String getUserAddress() {
+    public static String getUserAddress() {
         return userAddress;
     }
 
-    public String setUserAddress(String set){
+    public static String setUserAddress(String set){
         return userAddress = set;
     }
     public Boolean getProfileCreated() { return profileCreated; }
