@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +33,10 @@ public class CarGen  extends AsyncTask<String, Void, String> {
     User uInfo1,uInfo2,uInfo,uInfo3, uInfo4 = new User();
 
 
+    //temp cars for now
+    RideGroupManager carA = new RideGroupManager();
+    RideGroupManager carB = new RideGroupManager();
+
 
     protected String doInBackground(String... strings) {
 //        super.doInBackground();
@@ -39,6 +44,7 @@ public class CarGen  extends AsyncTask<String, Void, String> {
 //        onDataChange(datasnapshot);
 //        for (DataSnapshot ds : dataSnapshot.getChildren()) {
 //            User uInfo = new User();
+        //============================Setting temp users since I could not figure out firebase=================
             uInfo.setUserID("awefwaefewf"); //set the name
             uInfo.setUserAddress(""+3;  //set the email
             uInfo.setUserName("TinTin");
@@ -64,9 +70,14 @@ public class CarGen  extends AsyncTask<String, Void, String> {
         uInfo4.setUserName("TinTin");
         uInfo4.setUserPhoneNumber("911"); //set the phone_num
         return "";
+        //============================Setting temp users since Idk firebase=================
+
+        sortGetLowest();
         }
-
-
+        //creates a temp placeholder list of users and gives ArrayLists which stores the closest
+    // locations of other riders near them in sorted order.
+    //I noticed I created an extra arraylist, this can be handled later, but profiles is easier to keep
+    //track of
         public ArrayList<User> sortGetLowest() {
             profiles.add(uInfo1);
             profiles.add(uInfo2);
@@ -74,9 +85,11 @@ public class CarGen  extends AsyncTask<String, Void, String> {
             profiles.add(uInfo4);
             profiles.add(uInfo);
             double holder;
+
+            //temp object to hold and place object into Arraylist for distance sorting
             User publica;
 
-            //get the amount of distance and holding the next cloest person
+            //get the amount of distance and places them into the User's arraylist
             for (int i = 0; i < profiles.size(); i++) {
                 for (int j = 0; j < profiles.size(); j++) {
 //                    holder = Integer.parseDouble(profiles.get(j).getUserAddress());
@@ -87,17 +100,23 @@ public class CarGen  extends AsyncTask<String, Void, String> {
             }
             Integer [] bar;
             User [] bar1;
+
+            //then for profile, it will sort the array list (distance to other people near them) in each
+            //Will hold future sort object, object arrays
+            ArrayList<User> arrayList= new ArrayList<>();
             for (int i = 0; i < profiles.size(); i++) {
-//                profiles.get(i).setCloserAddress(i);
-//                bar = profiles.get(i).getCloserAddress().toArray(new Integer[profiles.size()]);
                 bar1 = profiles.get(i).getCloserAddress().toArray(new User[profiles.size()]);
                 sort(bar1, 0, bar1.length-1);
+                //set sorted address holder object array
+                arrayList.get(i).setCloserAddressAll(new ArrayList<User>(Arrays.asList(bar1)));
             }
 
-            ArrayList<User> arrayList = new ArrayList<User>(Arrays.asList(bar1));
+        //return the sorted arraylist of users with their sorted distance arraylists
             return arrayList;
 
         }
+
+        //Modified Quick sort
         int partition(User[] arr, int low, int high)
             {
                 int pivot = Integer.parseInt(arr[high].getUserAddress());
@@ -113,15 +132,15 @@ public class CarGen  extends AsyncTask<String, Void, String> {
                         // swap arr[i] and arr[j]
                         int temp = Integer.parseInt(arr[i].getUserAddress());
                         int tempi =  Integer.parseInt(arr[i].getUserAddress());
-                        arr[i].setUserAddress(Integer.parseInt(arr[high].getUserAddress(j)));
-                        Integer.parseInt(arr[high].getUserAddress(j))= temp;
+                        arr[i].setUserAddress(Integer.parseInt(arr[j].getUserAddress())+"");
+                        Integer.parseInt(arr[j].setUserAddress(temp+""));
                     }
                 }
 
                 // swap arr[i+1] and arr[high] (or pivot)
-                int temp = arr[i+1];
-                arr[i+1] = arr[high];
-                arr[high] = temp;
+                int temp = Integer.parseInt(arr[i+1].getUserAddress());
+                arr[i+1].setUserAddress(Integer.parseInt(arr[high].getUserAddress())+"");
+                arr[high].setUserAddress(temp+"");
 
                 return i+1;
             }
@@ -194,13 +213,34 @@ public class CarGen  extends AsyncTask<String, Void, String> {
 //        }
 //
 //    }
-        public void letsGetCars(ArrayList<Double>){
+
+    //Temporary for now, did not have a chance to make variable cars.
+        public void letsGetCars(){
+//            ArrayList<RideGroupManager> cars = ArrayList<RideGroupManager>();
+
+        sortGetLowest();
+
+
+        //car b is filled with the closets people to profile 0
+            //car has 2 spots
+        carB.setCar(profiles.get(0).getCloserAddressSingle(0));
+        carB.setCar(profiles.get(0).getCloserAddressSingle(1));
+
+        //car a has 3 spots
+        //car a is filled with the closet people to profile 1
+            carA.setCar(profiles.get(1).getCloserAddressSingle(2));
+            carA.setCar(profiles.get(1).getCloserAddressSingle(3));
+            carA.setCar(profiles.get(1).getCloserAddressSingle(4));
+
 
 
         }
 
     @Override
     protected void onPostExecute(String help) {
+        letsGetCars();
+
+        //do something with carA and carB?
 ////        super.onPostExecute(bitmap);
 ////        byte[] image = MyDB.getBytes(bitmap);
 ////        getImage.db.addEntry("Uh oh", image);

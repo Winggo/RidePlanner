@@ -8,6 +8,7 @@ public class User {
     String userPhoneNumber;
     static String userAddress;
     Boolean profileCreated;
+    //stores the closer people from least to greatest
   static  ArrayList<User> closer;
 
     public User() {
@@ -41,9 +42,18 @@ public class User {
         return closer;
 
     }
+    public static User getCloserAddressSingle(int c){
+        return closer.get(c);
+
+    }
 
     public static void setCloserAddress(User c){
         closer.add(c);
+//        return closer;
+
+    }
+    public static void setCloserAddressAll(ArrayList<User> c){
+       closer = c;
 //        return closer;
 
     }

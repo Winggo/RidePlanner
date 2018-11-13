@@ -3,6 +3,8 @@ package com.cmps121.rideplanner;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+
 //Reference:http://theopentutorials.com/tutorials/android/listview/android-custom-listview-with-address-and-text-using-arrayadapter/#ListView_Row_layout_XML_list_itemxml
 
 
@@ -13,11 +15,29 @@ public class RideGroupManager {
     private String address;
     private String title;
     private String id;
+    private ArrayList<User> Riders;
+
+    public RideGroupManager(){
+
+    }
 
     public RideGroupManager(String address1, String title, String id) {
         this.address = address1;
         this.title = title;
         this.id = id;
+    }
+
+    public ArrayList<User> getCar()
+    {
+        return Riders;
+    }
+    public void setCar(User user)
+    {
+        Riders.add(user);
+    }
+    public void setCarAll(ArrayList<User> userall)
+    {
+       Riders = userall;
     }
     public String getaddress()
     {
