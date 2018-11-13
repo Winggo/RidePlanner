@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class CarGen  extends AsyncTask<String, Void, String> {
+public class CarGen extends AsyncTask<String, Void, String> {
 //    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("groups/");
 
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener
+    private FirebaseAuth.AuthStateListener mAuthListener;
     ArrayList<User> profiles = new ArrayList<>();
     User uInfo1,uInfo2,uInfo,uInfo3, uInfo4 = new User();
 
@@ -46,7 +46,7 @@ public class CarGen  extends AsyncTask<String, Void, String> {
 //            User uInfo = new User();
         //============================Setting temp users since I could not figure out firebase=================
             uInfo.setUserID("awefwaefewf"); //set the name
-            uInfo.setUserAddress(""+3;  //set the email
+            uInfo.setUserAddress(""+3);  //set the email
             uInfo.setUserName("TinTin");
             uInfo.setUserPhoneNumber("911"); //set the phone_num
 
@@ -69,16 +69,20 @@ public class CarGen  extends AsyncTask<String, Void, String> {
         uInfo4.setUserAddress(""+1); //set the email
         uInfo4.setUserName("TinTin");
         uInfo4.setUserPhoneNumber("911"); //set the phone_num
+
+        letsGetCars();
         return "";
         //============================Setting temp users since Idk firebase=================
 
-        sortGetLowest();
+
+        //currently handles for the two temp cars I created
+
         }
         //creates a temp placeholder list of users and gives ArrayLists which stores the closest
     // locations of other riders near them in sorted order.
     //I noticed I created an extra arraylist, this can be handled later, but profiles is easier to keep
     //track of
-        public ArrayList<User> sortGetLowest() {
+        ArrayList<User> sortGetLowest() {
             profiles.add(uInfo1);
             profiles.add(uInfo2);
             profiles.add(uInfo3);
@@ -145,12 +149,7 @@ public class CarGen  extends AsyncTask<String, Void, String> {
                 return i+1;
             }
 
-
-    /* The main function that implements QuickSort()
-      arr[] --> Array to be sorted,
-      low  --> Starting index,
-      high  --> Ending index */
-    void sort(User arr[], int low, int high)
+            void sort(User arr[], int low, int high)
             {
                 if (low < high)
                 {
@@ -164,28 +163,7 @@ public class CarGen  extends AsyncTask<String, Void, String> {
                     sort(arr, pi+1, high);
                 }
             }
-
-            //then start throwing people into the cars
-            // look for the smallest arraylist that has lowest distance betwen the users
-            // and then work from there for rides
-
-//     public String getUserID() {
-//        return userID;
-//    }
-//
-//    public String getUserName() {
-//        return userName;
-//    }
-//
-//    public String getUserPhoneNumber() {
-//        return userPhoneNumber;
-//    }
-//
-//    public String getUserAddress() {
-//        return userAddress;
-//    }
-//
-//    public Boolean getProfileCreated() { return profileCreated; }
+   //===================================FireBase stuff I attempted and did not get================
 
 //    public void onDataChange(DataSnapshot dataSnapshot) {
 //        // This method is called once with the initial value and again
@@ -213,13 +191,13 @@ public class CarGen  extends AsyncTask<String, Void, String> {
 //        }
 //
 //    }
+    //===================================FireBase stuff I attempted and did not get================
 
     //Temporary for now, did not have a chance to make variable cars.
-        public void letsGetCars(){
+        void letsGetCars(){
 //            ArrayList<RideGroupManager> cars = ArrayList<RideGroupManager>();
 
         sortGetLowest();
-
 
         //car b is filled with the closets people to profile 0
             //car has 2 spots
@@ -239,15 +217,7 @@ public class CarGen  extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String help) {
         letsGetCars();
-
         //do something with carA and carB?
-////        super.onPostExecute(bitmap);
-////        byte[] image = MyDB.getBytes(bitmap);
-////        getImage.db.addEntry("Uh oh", image);
-//        saveImage(mContext, bitmap, makepath+".jpg");
-//        getImage.pathholder = makepath+".jpg";
-//////        MainActivity.imageView.setImageBitmap(bitmap);
-
 
             }
 
