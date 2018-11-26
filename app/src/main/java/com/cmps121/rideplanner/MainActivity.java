@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference dbUsers;
     String userID;
     FirebaseUser user;
+    Button viewInvitesBtn;
+    Integer inviteCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +48,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser() != null) {
+            inviteCount = 0;
+
             // user has already signed in
             user = FirebaseAuth.getInstance().getCurrentUser();
             userID = user.getUid();
+            dbUsers = db.getReference("users");
+
+            // query to find the amount of invites the user has
+
+            dbUsers.child(userID).child("eventInvites").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.d("Events", "in ondatachange");
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Log.d("Events", "adding " + String.valueOf(ds.getChildrenCount()));
+                        inviteCount += (int) ds.child("events").getChildrenCount();
+                    }
+                    viewInvitesBtn = findViewById(R.id.viewInvitesBtn);
+                    viewInvitesBtn.setText(String.valueOf(inviteCount));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
         else {
             createSignInIntent();
         }
+
     }
 
     // route to creating group page. might be able to just set content view. not sure
+
     public void onCreateGroup(View view) {
         Intent intent = new Intent(this, CreatingGroups.class);
         startActivity(intent);
@@ -72,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void onEditProfile(View view) {
         Intent intent = new Intent(this, EditProfile.class);
+        startActivity(intent);
+    }
+
+    public void onViewInvites(View view) {
+        Intent intent = new Intent (this, ViewInvites.class);
         startActivity(intent);
     }
 

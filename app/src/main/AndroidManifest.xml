@@ -59,15 +59,15 @@
         <activity
             android:name=".EventPage"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".ViewMembers"
+        <activity
+            android:name=".ViewMembers"
             android:theme="@style/Theme.AppCompat.Dialog" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-
+        <activity android:name=".ViewInvites"></activity>
     </application>
 
 </manifest>

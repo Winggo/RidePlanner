@@ -36,6 +36,10 @@ public class CreateEventPopUp extends AppCompatActivity {
     String groupName;
     String groupCode;
 
+    String userName;
+    String userAddress;
+    String userPhoneNumber;
+
     GenericTypeIndicator<Map<String, Boolean>> genericTypeIndicator;
     Map<String, Boolean> events;
 
@@ -60,16 +64,38 @@ public class CreateEventPopUp extends AppCompatActivity {
 
         groupName = getIntent().getStringExtra("groupName");
         groupCode = getIntent().getStringExtra("groupCode");
+
+        Query query = dbUsers
+                .orderByChild("userID")
+                .equalTo(userID);
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    userName = ds.child("userName").getValue().toString();
+                    userAddress = ds.child("address").getValue().toString();
+                    userPhoneNumber = ds.child("phoneNumber").getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        query.addListenerForSingleValueEvent(valueEventListener);
     }
 
     public void onCreateEventBtn(View view) {
-        Map<String, Boolean> attendees = new HashMap<>();
-        attendees.put(userID, true);
+        Map<String, User> attendees = new HashMap<>();
+        User user = new User(true, false, userID, userName, userPhoneNumber, userAddress);
+        attendees.put(userID, user);
 
         eventName = eventNameInput.getText().toString();
         eventDescription = eventDescriptionInput.getText().toString();
         Event event = new Event(eventName, eventDescription, attendees);
-
 
         dbGroups.child(groupCode).child("events").child(eventName).setValue(event);
 
