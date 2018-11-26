@@ -15,7 +15,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
@@ -28,22 +27,18 @@ public class JoiningGroups extends AppCompatActivity {
     DatabaseReference dbGroups;
 
     FirebaseUser user;
-    String userID;
 
     EditText codeInput;
-
-    GenericTypeIndicator<Map<String, Map<String, Map<String, Boolean>>>> genericTypeIndicator2;
-
-    GenericTypeIndicator<Map<String, Boolean>> genericTypeIndicator;
-    Map<String, Map<String, Map<String, Boolean>>> groups;
 
     Boolean foundGroup;
     Button joinButton;
     String groupCode;
     String groupName;
 
-    Map<String, Map<String, Boolean>> events;
-    Map<String, Boolean> tempEvents;
+    String userID;
+    String userName;
+    String userAddress;
+    String userPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +46,34 @@ public class JoiningGroups extends AppCompatActivity {
         setContentView(R.layout.activity_joining_groups);
         db = FirebaseDatabase.getInstance();
         dbGroups = db.getReference("groups");
-        genericTypeIndicator = new GenericTypeIndicator<Map<String, Boolean>>() {};
-        genericTypeIndicator2 = new GenericTypeIndicator<Map<String, Map<String, Map<String, Boolean>>>>() {};
+        dbUsers = db.getReference("users");
 
         foundGroup = false;
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID = user.getUid();
+
+        Query query = dbUsers
+                .orderByChild("userID")
+                .equalTo(userID);
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    userName = ds.child("userName").getValue().toString();
+                    userAddress = ds.child("address").getValue().toString();
+                    userPhoneNumber = ds.child("phoneNumber").getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        query.addListenerForSingleValueEvent(valueEventListener);
+
 
         codeInput = (EditText) findViewById(R.id.codeInput);
 
@@ -67,16 +84,13 @@ public class JoiningGroups extends AppCompatActivity {
                 onJoinButton(view);
             }
         });
-
-        events = new HashMap<>();
-        tempEvents = new HashMap<>();
-        groups = new HashMap<>();
-
     }
 
     public void onJoinButton(View view) {
         // get user input code
         groupCode = codeInput.getText().toString();
+
+        // find the group
         Query query = FirebaseDatabase.getInstance().getReference("groups")
                 .orderByChild("groupCode")
                 .equalTo(groupCode);
@@ -84,17 +98,16 @@ public class JoiningGroups extends AppCompatActivity {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String, Boolean> members = new HashMap<>();
+                Map<String, Object> members = new HashMap<>();
+                // build the group User object
+                User user = new User(userID, userName, userPhoneNumber, userAddress, false);
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     foundGroup = true;
                     groupName = ds.child("groupName").getValue().toString();
 
-                    if (ds.child("members").getValue(genericTypeIndicator) != null) {
-                        members = ds.child("members").getValue(genericTypeIndicator);
-                    }
                     // add userID to the members and update the value
-                    members.put(userID, true);
-                    ds.getRef().child("members").setValue(members);
+                    members.put(userID, user);
+                    ds.getRef().child("members").updateChildren(members);
                 }
 
                 if(!foundGroup) {
@@ -109,22 +122,14 @@ public class JoiningGroups extends AppCompatActivity {
                     ValueEventListener userValueEventListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                          //  Map<String, Boolean> groups = new HashMap<>();
+                            Map<String, Object> groups = new HashMap<>();
+                            Map<String, Object> events = new HashMap<>();
+                            // add the group to the user field with a temporary event field
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                                if (ds.child("groups").getValue(genericTypeIndicator2) != null) {
-                                    groups = ds.child("groups").getValue(genericTypeIndicator2);
-                                    tempEvents.put("init", false);
-                                    events.put("events", tempEvents);
-                                    groups.put(groupName, events);
-                                    ds.getRef().child("groups").setValue(groups);
-                                }
-                                else {
-                                    tempEvents.put("init", false);
-                                    ds.child("groups").getRef().child(groupName).child("events").setValue(tempEvents);
-                                }
-                             /*   groups.put(groupName, true);
-                                ds.getRef().child("groups").setValue(groups);*/
+                                events.put("init", false);
+                                groups.put(groupName, true);
+                                ds.child("groups").getRef().updateChildren(groups);
+                                ds.getRef().child("groups").child(groupName).child("events").updateChildren(events);
 
                                 Intent intent = new Intent(getApplicationContext(), GroupPage.class);
                                 intent.putExtra("groupClicked", groupName);
