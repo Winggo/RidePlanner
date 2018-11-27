@@ -19,7 +19,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
@@ -40,26 +39,20 @@ public class CreatingGroups extends AppCompatActivity {
 
     String groupName;
     String userID;
+    String userName;
+    String userAddress;
+    String userPhoneNumber;
     String groupID = "";
-
-    GenericTypeIndicator<Map<String, Map<String, Map<String, Boolean>>>> genericTypeIndicator;
-    Map<String, Map<String, Map<String, Boolean>>> groups;
-    Map<String, Map<String, Boolean>> events;
-    Map<String, Boolean> tempEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creating_groups);
-        genericTypeIndicator = new GenericTypeIndicator<Map<String, Map<String, Map<String, Boolean>>>>() {};
 
         db = FirebaseDatabase.getInstance();
         dbGroups = db.getReference("groups");
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID = user.getUid();
-        groups = new HashMap<>();
-        events = new HashMap<>();
-        tempEvents = new HashMap<>();
 
         groupInput = (EditText) findViewById(R.id.groupField);
         createButton = (Button) findViewById(R.id.createBtn);
@@ -80,20 +73,15 @@ public class CreatingGroups extends AppCompatActivity {
         groupName = groupInput.getText().toString();
         groupID = dbGroups.push().getKey();
 
+        // if the user entered an invalid group name, don't let them create it
         if (groupName == null || !groupName.matches("^[a-zA-Z0-9 ]+$") || groupName.isEmpty()) {
             finish();
             startActivity(getIntent());
             Toast.makeText(getApplicationContext(), "Please only use letters and numbers in your group name!", Toast.LENGTH_LONG).show();
+
         } else {
-
+            // otherwise let them create it
             groupCode.setText(groupID);
-            Map<String, Boolean> members = new HashMap<>();
-
-            members.put(userID, true);
-
-            Group group = new Group(groupName, groupID);
-            dbGroups.child(groupID).setValue(group);
-            dbGroups.child(groupID).child("members").setValue(members);
 
             Query query = FirebaseDatabase.getInstance().getReference("users")
                     .orderByChild("userID")
@@ -102,21 +90,31 @@ public class CreatingGroups extends AppCompatActivity {
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Map<String, Object> groups= new HashMap<>();
+                    Map<String, Object> events = new HashMap<>();
+
+                    // create a temporary event to initialize the user's event field
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        Log.d("Debugg", "in for loop");
-                        if (ds.child("groups").getValue(genericTypeIndicator) != null) {
-                            Log.d("Debugg", "in if statement");
-                            groups = ds.child("groups").getValue(genericTypeIndicator);
-                            tempEvents.put("init", false);
-                            events.put("events", tempEvents);
-                            groups.put(groupName, events);
-                            ds.getRef().child("groups").setValue(groups);
-                        }
-                        else {
-                            tempEvents.put("init", false);
-                            ds.child("groups").getRef().child(groupName).child("events").setValue(tempEvents);
-                        }
+                        events.put("init", false);
+                        groups.put(groupName, true);
+                        ds.child("groups").getRef().updateChildren(groups);
+                        ds.getRef().child("groups").child(groupName).child("events").setValue(events);
+
+                        // grab all the info from the user while we are querying the user
+                        userName = ds.child("userName").getValue().toString();
+                        userAddress = ds.child("address").getValue().toString();
+                        userPhoneNumber = ds.child("phoneNumber").getValue().toString();
+
                     }
+
+                    // update the group with the new user
+                    Map<String, User> members = new HashMap<>();
+                    User user = new User(userID, userName, userPhoneNumber, userAddress, true);
+                    members.put(userID, user);
+
+                    Group group = new Group(groupName, groupID);
+                    dbGroups.child(groupID).setValue(group);
+                    dbGroups.child(groupID).child("members").setValue(members);
                 }
 
                 @Override

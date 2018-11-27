@@ -67,53 +67,22 @@ public class ViewMembers extends AppCompatActivity {
                 .orderByChild("groupCode")
                 .equalTo(groupCode);
 
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        dbMembers.getRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.d("gahh", "in first datasnapshot");
-                    if (ds.child("members").getValue(genericTypeIndicator) != null) {
-                        Log.d("gahh", "got membersMap");
-                        membersMap = ds.child("members").getValue(genericTypeIndicator);
-                    }
+                    User user = ds.getValue(User.class);
+                    members.add(user.getUserName());
                 }
 
-                for (String memberID : membersMap.keySet()) {
-                    Query memberQuery = FirebaseDatabase.getInstance().getReference("users")
-                            .orderByChild("userID")
-                            .equalTo(memberID);
-
-                    ValueEventListener memberValueListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                Log.d("gahh", "adding");
-                                members.add(ds.child("userName").getValue().toString());
-                            }
-
-
-                            // display the members
-                            ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, members);
-                            memberList.setAdapter(adapter);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    };
-
-                    memberQuery.addListenerForSingleValueEvent(memberValueListener);
-                }
+                ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, members);
+                memberList.setAdapter(adapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        };
-
-        query.addListenerForSingleValueEvent(valueEventListener);
-
+        });
     }
 }
