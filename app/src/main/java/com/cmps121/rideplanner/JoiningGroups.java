@@ -61,9 +61,15 @@ public class JoiningGroups extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     userName = ds.child("userName").getValue().toString();
-                    userAddress = ds.child("address").getValue().toString();
-                    userPhoneNumber = ds.child("phoneNumber").getValue().toString();
-                }
+                    try {
+                        userAddress = ds.child("address").getValue().toString();
+                        userPhoneNumber = ds.child("phoneNumber").getValue().toString();
+
+                    }       catch(NullPointerException e){
+                        Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    }
             }
 
             @Override

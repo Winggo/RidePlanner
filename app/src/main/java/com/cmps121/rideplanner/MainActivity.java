@@ -89,13 +89,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onJoinGroup(View view) {
+        try{
         Intent intent = new Intent(this, JoiningGroups.class);
-        startActivity(intent);
+        startActivity(intent);}
+        catch(Exception e){
+            Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     public void onViewGroups(View view) {
+        try{
         Intent intent = new Intent(this, ViewGroups.class);
-        startActivity(intent);
+        startActivity(intent);}
+        catch(Exception e){
+            Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     public void onEditProfile(View view) {
