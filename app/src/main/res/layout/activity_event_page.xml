@@ -10,7 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="53dp">
 
         <TextView
             android:id="@+id/eventPageGroupTitle"
@@ -124,6 +127,13 @@
             android:onClick="onInviteFriends"
             android:text="Invite Friends"
             android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="121dp"
+            android:layout_height="wrap_content"
+            android:onClick="goToCars"
+            android:text="CarGen" />
 
     </LinearLayout>
 

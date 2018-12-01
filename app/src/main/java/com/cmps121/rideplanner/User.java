@@ -3,15 +3,15 @@ package com.cmps121.rideplanner;
 import java.util.HashMap;
 
 public class User {
-    String userID;
-    String userName;
-    String phoneNumber;
-    String address;
-    Boolean moderator;
-    Boolean eventModerator;
-    Boolean driver;
-    Boolean profileCreated;
-    HashMap<String, Boolean> groups;
+    static String userID;
+    static String userName;
+    static String phoneNumber;
+    static String address;
+    static Boolean moderator;
+    static Boolean eventModerator;
+    static Boolean driver;
+    static Boolean profileCreated;
+    static HashMap<String, Boolean> groups;
 
     public User() {
     }
@@ -56,7 +56,9 @@ public class User {
         this.driver = driver;
     }
 
-    public String getUserID() { return userID; }
+
+
+    public static String getUserID() { return userID; }
 
     public String getUserName() {
         return userName;
@@ -71,4 +73,26 @@ public class User {
     }
 
     public Boolean getProfileCreated() { return profileCreated; }
+
+
+    public String setUserID(String set){
+        return userID =  set;
+    }
+
+
+    public String setUserName(String set){
+        return userName = set;
+    }
+
+
+    public String setUserPhoneNumber(String set){
+        userID = set;
+        return userID;
+    }
+
+
+    public String setUserAddress(String set){
+        return address = set;
+    }
+
 }

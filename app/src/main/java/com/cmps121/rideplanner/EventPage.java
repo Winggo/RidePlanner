@@ -1,6 +1,7 @@
 package com.cmps121.rideplanner;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -73,6 +74,12 @@ public class EventPage extends AppCompatActivity {
 
 
     private ArrayList<Integer> selectedMembersIndexList;
+
+
+    protected void goToCars(View view){
+        Intent intent = new Intent(this, viewAllCars.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
