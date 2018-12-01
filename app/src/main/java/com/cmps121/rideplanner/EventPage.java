@@ -414,4 +414,12 @@ public class EventPage extends AppCompatActivity {
 
         query.addListenerForSingleValueEvent(valueEventListener);
     }
+
+    public void onGenerateCars(View view) {
+        Intent intent = new Intent(this, GenerateCars.class);
+        intent.putExtra("groupName", groupName);
+        intent.putExtra("groupCode", groupCode);
+        intent.putExtra("eventName", eventName);
+        startActivity(intent);
+    }
 }

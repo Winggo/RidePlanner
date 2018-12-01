@@ -68,7 +68,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".ViewInvites"></activity>
+        <activity android:name=".ViewInvites" />
+        <activity android:name=".GenerateCars"></activity>
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -74,8 +75,14 @@ public class CreateEventPopUp extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     userName = ds.child("userName").getValue().toString();
-                    userAddress = ds.child("address").getValue().toString();
-                    userPhoneNumber = ds.child("phoneNumber").getValue().toString();
+                    try {
+                        userAddress = ds.child("address").getValue().toString();
+                        userPhoneNumber = ds.child("phoneNumber").getValue().toString();
+
+                    } catch (NullPointerException e) {
+                        Toast.makeText(getApplicationContext(), "Please set up your user profile!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
                 }
             }
 
