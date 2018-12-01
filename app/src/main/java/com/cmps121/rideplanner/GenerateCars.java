@@ -1,9 +1,12 @@
 package com.cmps121.rideplanner;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -14,11 +17,20 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GenerateCars extends AppCompatActivity {
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference dbEvent;
+
+    private Context context;
+    private ListView itemsList;
+    //    private ArrayList<String> items;
+    private ArrayAdapter<User> adapter;
+
+    ListView listView;
+//    List<Holder> rowItems;
 
     TextView groupTitleView;
     TextView eventTitleView;
@@ -32,7 +44,7 @@ public class GenerateCars extends AppCompatActivity {
     * just displaying the name of the group
     * without displaying the groupCode*/
     ArrayList<User> drivers;
-    ArrayList<User> attendees;
+    static List<User> attendees;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +62,7 @@ public class GenerateCars extends AppCompatActivity {
         eventTitleView.setText(eventName);
 
         drivers = new ArrayList<>();
-        attendees = new ArrayList<>();
+        attendees = new ArrayList<User>();
 
         // get the reference to the event we are generating cars in
         dbEvent = db.getReference("groups").child(groupCode).child("events").child(eventName);
@@ -74,6 +86,13 @@ public class GenerateCars extends AppCompatActivity {
                         attendees.add(ds.getValue(User.class));
                     }
                 }
+//                adapter = new ArrayAdapter<User>(this, android.R.layout.simple_list_item_1, attendees);
+//                itemsList.setAdapter(adapter);
+
+                listView = (ListView) findViewById(R.id.list);
+                CustomListViewAdapter adapter = new CustomListViewAdapter(context, R.layout.list_item, attendees);
+                listView.setAdapter(adapter);
+//                listView.setOnItemClickListener(this);
 
                 /* everything that you do to display this list of drivers or attendees must be done in this
                  * onDataChange method. Firebase does its queries ASYNC and if you try to do it
@@ -96,5 +115,7 @@ public class GenerateCars extends AppCompatActivity {
             }
         });
     }
+
+
 
 }

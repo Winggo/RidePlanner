@@ -47,7 +47,7 @@ public class CustomListViewAdapter extends ArrayAdapter<User> {
         } else
             holder = (ViewHolder) convertView.getTag();
 
-        holder.txtDesc.setText(rowItem.getAddress());
+        holder.txtDesc.setText(rowItem.getUserName());
         holder.txtTitle.setText(rowItem.getAddress());
 //        holder.imageView.setImageBitmap(222);
 
