@@ -4,4 +4,5 @@
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">963594077181158</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb963594077181158</string>
+    <string name="title_activity_generate_cars">GenerateCars</string>
 </resources>

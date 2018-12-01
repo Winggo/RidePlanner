@@ -1,6 +1,7 @@
 package com.cmps121.rideplanner;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -406,5 +407,13 @@ public class EventPage extends AppCompatActivity {
         };
 
         query.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    public void onGenerateCars(View view) {
+        Intent intent = new Intent(this, GenerateCars.class);
+        intent.putExtra("groupName", groupName);
+        intent.putExtra("groupCode", groupCode);
+        intent.putExtra("eventName", eventName);
+        startActivity(intent);
     }
 }
