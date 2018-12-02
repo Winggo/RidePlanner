@@ -64,7 +64,7 @@ public class CreateEventPopUp extends AppCompatActivity {
 
         eventNameInput = findViewById(R.id.eventNameInput);
         eventDescriptionInput = findViewById(R.id.descriptionInput);
-        eventLocationInput = findViewById(R.id.eventLoc);
+        eventLocationInput = findViewById(R.id.editLoc);
 
         groupName = getIntent().getStringExtra("groupName");
         groupCode = getIntent().getStringExtra("groupCode");
