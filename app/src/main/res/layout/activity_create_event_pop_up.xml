@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".CreateEventPopUp">
 
+    <EditText
+        android:id="@+id/eventLoc"
+        android:layout_width="wrap_content"
+        android:layout_height="79dp"
+        android:ems="10"
+        android:inputType="textPostalAddress"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        tools:layout_editor_absoluteX="69dp" />
+
     <TextView
         android:id="@+id/nameHeader"
         android:layout_width="wrap_content"
@@ -76,7 +85,17 @@
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionInput" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionInput"
+        app:layout_constraintTop_toTopOf="@+id/eventLoc"
+        app:layout_constraintVertical_bias="0.801" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionInput"
+        tools:layout_editor_absoluteX="147dp" />
 </android.support.constraint.ConstraintLayout>

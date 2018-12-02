@@ -30,9 +30,11 @@ public class CreateEventPopUp extends AppCompatActivity {
 
     EditText eventNameInput;
     EditText eventDescriptionInput;
+    EditText eventLocationInput;
 
     String eventName;
     String eventDescription;
+    String eventLocation;
     String userID;
     String groupName;
     String groupCode;
@@ -62,6 +64,7 @@ public class CreateEventPopUp extends AppCompatActivity {
 
         eventNameInput = findViewById(R.id.eventNameInput);
         eventDescriptionInput = findViewById(R.id.descriptionInput);
+        eventLocationInput = findViewById(R.id.eventLoc);
 
         groupName = getIntent().getStringExtra("groupName");
         groupCode = getIntent().getStringExtra("groupCode");
@@ -102,7 +105,8 @@ public class CreateEventPopUp extends AppCompatActivity {
 
         eventName = eventNameInput.getText().toString();
         eventDescription = eventDescriptionInput.getText().toString();
-        Event event = new Event(eventName, eventDescription, attendees);
+        eventLocation = eventLocationInput.getText().toString();
+        Event event = new Event(eventName, eventDescription, eventLocation, attendees);
 
         dbGroups.child(groupCode).child("events").child(eventName).setValue(event);
 

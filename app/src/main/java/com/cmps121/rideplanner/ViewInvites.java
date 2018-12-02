@@ -47,11 +47,12 @@ public class ViewInvites extends AppCompatActivity {
                 // for each group found, grab all events and add them to the arraylist
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String groupName = ds.child("groupName").getValue().toString();
+                    String eventLocation  = ds.child("eventLocation").getValue().toString();
                     String groupCode = ds.getKey();
                     String eventName;
                     for (DataSnapshot data : ds.child("events").getChildren()) {
                         eventName = data.getKey();
-                        EventInviteListItem event = new EventInviteListItem(groupName, groupCode, eventName);
+                        EventInviteListItem event = new EventInviteListItem(groupName, groupCode, eventLocation, eventName);
                         events.add(event);
                     }
                 }

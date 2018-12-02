@@ -19,6 +19,7 @@ public class GenerateCars extends AppCompatActivity {
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference dbEvent;
+    Downloader down = new Downloader();
 
     TextView groupTitleView;
     TextView eventTitleView;
@@ -56,6 +57,8 @@ public class GenerateCars extends AppCompatActivity {
         dbEvent = db.getReference("groups").child(groupCode).child("events").child(eventName);
 
         // query all attendeess
+        String holdMapsData;
+        //holdMapsData = down.execute();
 
         dbEvent.child("attendees").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
