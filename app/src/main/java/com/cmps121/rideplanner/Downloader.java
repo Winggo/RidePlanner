@@ -67,12 +67,14 @@ public class Downloader  extends AsyncTask<String, Void, String> {
         int where1 = s.indexOf("mi");
         String newww= s.substring(where, where1).replaceAll("[^\\d.]", "") + "miles from event";;
 
+        //grabbing the time
         int wheretime = s.indexOf("duration");
         int wheretime1 = s.indexOf("}");
-        String time= s.substring(where, where1).replaceAll("[^\\d.]", "") + "seconds from event";;
+        String time= Integer.parseInt(s.substring(where, where1).replaceAll("[^\\d.]", ""))/60 + "minutes from event";;
+        super.onPostExecute(newww + "||" + time);
 
 
-
+//        MainActivity.textView.setText(newww);
 
     }
 }
