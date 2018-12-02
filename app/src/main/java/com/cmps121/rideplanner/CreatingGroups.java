@@ -53,7 +53,7 @@ public class CreatingGroups extends AppCompatActivity {
         dbGroups = db.getReference("groups");
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID = user.getUid();
-
+        Log.d("strange", userID);
         groupInput = (EditText) findViewById(R.id.groupField);
         createButton = (Button) findViewById(R.id.createBtn);
         shareTitle = (TextView) findViewById(R.id.shareTitle);

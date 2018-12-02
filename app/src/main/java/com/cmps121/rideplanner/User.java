@@ -64,6 +64,18 @@ public class User {
         return userName;
     }
 
+    public static Boolean getModerator() {
+        return moderator;
+    }
+
+    public static Boolean getEventModerator() {
+        return eventModerator;
+    }
+
+    public static Boolean getDriver() {
+        return driver;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -75,7 +87,7 @@ public class User {
     public Boolean getProfileCreated() { return profileCreated; }
 
 
-    public String setUserID(String set){
+    /*public String setUserID(String set){
         return userID =  set;
     }
 
@@ -93,6 +105,6 @@ public class User {
 
     public String setUserAddress(String set){
         return address = set;
-    }
+    }*/
 
 }

@@ -25,37 +25,37 @@ public class viewAllCars extends AppCompatActivity {
     }
 
     public void listDrivers(View view){
-        uInfo.setUserID("awefwaefewf"); //set the name
-        uInfo.setUserAddress(""+3);  //set the email
-        uInfo.setUserName("TinTin");
-        uInfo.setUserPhoneNumber("911"); //set the phone_num
-
-//            User uInfo1 = new User();
-        uInfo1.setUserAddress(""+6); //set the email
-        uInfo1.setUserName("TinTin");
-        uInfo1.setUserPhoneNumber("911"); //set the phone_num
-
-//            User uInfo2 = new User();
-        uInfo2.setUserAddress((""+2)); //set the email
-        uInfo2.setUserName("TinTin");
-        uInfo2.setUserPhoneNumber("911"); //set the phone_num
-
-        uInfo3.setUserAddress((""+10)); //set the email
-        uInfo3.setUserName("TinTin");
-        uInfo3.setUserPhoneNumber("911"); //set the phone_num
-
-
-        uInfo4.setUserAddress("107 Nobel Drive, Santa Cruz"); //set the email
-        uInfo4.setUserAddress(""+1); //set the email
-        uInfo4.setUserName("TinTin");
-        uInfo4.setUserPhoneNumber("911"); //set the phone_num
-
-
-        profiles.add(uInfo1);
-        profiles.add(uInfo2);
-        profiles.add(uInfo3);
-        profiles.add(uInfo4);
-        profiles.add(uInfo);
+//        uInfo.setUserID("awefwaefewf"); //set the name
+//        uInfo.setUserAddress(""+3);  //set the email
+//        uInfo.setUserName("TinTin");
+//        uInfo.setUserPhoneNumber("911"); //set the phone_num
+//
+////            User uInfo1 = new User();
+//        uInfo1.setUserAddress(""+6); //set the email
+//        uInfo1.setUserName("TinTin");
+//        uInfo1.setUserPhoneNumber("911"); //set the phone_num
+//
+////            User uInfo2 = new User();
+//        uInfo2.setUserAddress((""+2)); //set the email
+//        uInfo2.setUserName("TinTin");
+//        uInfo2.setUserPhoneNumber("911"); //set the phone_num
+//
+//        uInfo3.setUserAddress((""+10)); //set the email
+//        uInfo3.setUserName("TinTin");
+//        uInfo3.setUserPhoneNumber("911"); //set the phone_num
+//
+//
+//        uInfo4.setUserAddress("107 Nobel Drive, Santa Cruz"); //set the email
+//        uInfo4.setUserAddress(""+1); //set the email
+//        uInfo4.setUserName("TinTin");
+//        uInfo4.setUserPhoneNumber("911"); //set the phone_num
+//
+//
+//        profiles.add(uInfo1);
+//        profiles.add(uInfo2);
+//        profiles.add(uInfo3);
+//        profiles.add(uInfo4);
+//        profiles.add(uInfo);
 
 
         itemsList = findViewById(R.id.list);

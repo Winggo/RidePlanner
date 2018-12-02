@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -99,11 +100,12 @@ public class CreateEventPopUp extends AppCompatActivity {
         Map<String, User> attendees = new HashMap<>();
         User user = new User(true, false, userID, userName, userPhoneNumber, userAddress);
         attendees.put(userID, user);
+        Log.d("strange", "put attendees");
 
         eventName = eventNameInput.getText().toString();
         eventDescription = eventDescriptionInput.getText().toString();
         Event event = new Event(eventName, eventDescription, attendees);
-
+        Log.d("strange", user.getDriver().toString());
         dbGroups.child(groupCode).child("events").child(eventName).setValue(event);
 
         Query query = FirebaseDatabase.getInstance().getReference("users")
