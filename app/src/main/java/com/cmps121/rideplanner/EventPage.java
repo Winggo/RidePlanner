@@ -1,5 +1,6 @@
 package com.cmps121.rideplanner;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -27,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +45,7 @@ public class EventPage extends AppCompatActivity {
     String userName;
     String invitedUserID;
 
+    static boolean areDriver = false;
     TextView eventPageGroupTitle;
     TextView eventPageEventTitle;
     TextView eventPageDescription;
@@ -221,6 +224,9 @@ public class EventPage extends AppCompatActivity {
         });
 
     }
+
+
+
 
     public void onViewGoingMembers(View view) {
         Query query = eventsRef
@@ -408,6 +414,148 @@ public class EventPage extends AppCompatActivity {
 
         query.addListenerForSingleValueEvent(valueEventListener);
     }
+
+
+    public void onCreateDialog(View view) {
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(EventPage.this);
+            builderSingle.setIcon(R.drawable.fui_ic_phone_white_24dp);
+            builderSingle.setTitle("Select One Name:-");
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(EventPage.this, android.R.layout.select_dialog_singlechoice);
+            arrayAdapter.add("Hardik");
+            arrayAdapter.add("Archit");
+            arrayAdapter.add("Jignesh");
+            arrayAdapter.add("Umang");
+            arrayAdapter.add("Gatti");
+
+            builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String strName = arrayAdapter.getItem(which);
+                    AlertDialog.Builder builderInner = new AlertDialog.Builder(EventPage.this);
+                    builderInner.setMessage(strName);
+                    builderInner.setTitle("Your Selected Item is");
+                    builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog,int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builderInner.show();
+                }
+            });
+            builderSingle.show();
+        }
+
+
+
+
+
+
+
+
+
+    public void onCreateDriverList (View view) {
+            Query query = eventsRef
+                    .orderByChild("eventName")
+                    .equalTo(eventName);
+//       final ArrayAdapter<String> userList = new ArrayAdapter<String>(EventPage.this, android.R.layout.select_dialog_singlechoice);
+      final  ArrayList<String> userList = new ArrayList<String>();
+//       ArrayList<String> userList2 = new ArrayList<>(Eve);
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EventPage.this);
+                    builder.setTitle("Your Car List");
+                    int i = 0;
+                    //brute force way to get children within children
+                    for (DataSnapshot ds : dataSnapshot.child(eventName).child("cars").getChildren()) {
+                        i++;
+                    }
+//                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+//                    String tokenId = FirebaseInstanceId.getInstance().getToken();
+                    //nested forloops to check nested children
+                    for (DataSnapshot ds : dataSnapshot.child(eventName).child("cars").getChildren()) {
+//                        DataSnapshot ds1 =  dataSnapshot.child(eventName).child("cars").getSnapshot();
+                        for (int j = 0; j < i; j++) {
+                            if (dataSnapshot.child(eventName).child("cars").getChildren().equals(dataSnapshot.child(eventName).child("cars").getRef().child("driverID"))) {
+                                areDriver = true;
+                            }
+                        }
+                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                    i++;
+                    }
+                    if(areDriver) {
+                        for (DataSnapshot ds : dataSnapshot.child(eventName).child("cars").getChildren()) {
+                            User user = ds.getValue(User.class);
+                            userList.add(user.getUserName());
+                        }
+                        CharSequence[] cs = userList.toArray(new CharSequence[userList.size()]);
+                        builder.setItems(cs, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+//                        builder.show();
+                        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }else{
+                        builder.setTitle("Your Car List???");
+                        userList.add("You are not a driver. Clearly you will have no one to drive.");
+//                        builder.show();
+                        CharSequence[] cs = userList.toArray(new CharSequence[userList.size()]);
+                        builder.setItems(cs, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            @Override
+
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                    }
+//                    CharSequence[] cs = userList.toArray(new CharSequence[userList.size()]);
+//                    builder.setItems(cs, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//
+//                        }
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+
+            query.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+
+
+
 
     public void onGenerateCars(View view) {
         Intent intent = new Intent(this, GenerateCars.class);

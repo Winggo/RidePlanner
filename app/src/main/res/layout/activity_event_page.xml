@@ -135,6 +135,13 @@
             android:text="Generate Cars"
             android:textAllCaps="false" />
 
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="122dp"
+            android:layout_height="wrap_content"
+            android:onClick="onCreateDriverList"
+            android:text="View My Car" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
