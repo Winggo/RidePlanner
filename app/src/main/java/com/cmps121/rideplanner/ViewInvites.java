@@ -27,6 +27,7 @@ public class ViewInvites extends AppCompatActivity {
     FirebaseUser user;
     ArrayList<EventInviteListItem> events;
     ListView listView;
+    String eventLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

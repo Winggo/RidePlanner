@@ -1,5 +1,6 @@
 package com.cmps121.rideplanner;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class EventInviteAdapter extends ArrayAdapter<EventInviteListItem> {
 
         TextView eventName = convertView.findViewById(R.id.eventName);
         TextView groupName = convertView.findViewById(R.id.groupName);
+        //TextView eventLocation = convertView.findViewById(R.id.location);
 
         ImageButton noButton = convertView.findViewById(R.id.noBtn);
         noButton.setTag(position);
@@ -46,6 +48,8 @@ public class EventInviteAdapter extends ArrayAdapter<EventInviteListItem> {
                 String groupCodeStr = eventInviteListItem.getGroupCode();
                 String eventNameStr = eventInviteListItem.getEventName();
                 remove(getItem(position));
+
+
                 notifyDataSetChanged();
                 FirebaseDatabase.getInstance().getReference("users").child(userID).child("eventInvites").
                         child(groupCodeStr).child("events").child(eventNameStr).removeValue();
@@ -61,6 +65,7 @@ public class EventInviteAdapter extends ArrayAdapter<EventInviteListItem> {
             public void onClick(View v) {
                 int position = (Integer) v.getTag();
                 EventInviteListItem eventInviteListItem = getItem(position);
+//                String eventLocation = eventInviteListItem.getEventLocation();
                 String eventName = eventInviteListItem.getEventName();
                 String groupName = eventInviteListItem.getGroupName();
                 String groupCode = eventInviteListItem.getGroupCode();
@@ -68,6 +73,7 @@ public class EventInviteAdapter extends ArrayAdapter<EventInviteListItem> {
                 intent.putExtra("groupName", groupName);
                 intent.putExtra("groupCode", groupCode);
                 intent.putExtra("eventName", eventName);
+//                intent.putExtra("eventLocation", eventLocation);
                 context.startActivity(intent);
             }
         });

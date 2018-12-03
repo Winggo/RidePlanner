@@ -1,6 +1,8 @@
 package com.cmps121.rideplanner;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -26,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +45,7 @@ public class EventPage extends AppCompatActivity {
     String userName;
     String invitedUserID;
 
+    static boolean areDriver = false;
     TextView eventPageGroupTitle;
     TextView eventPageEventTitle;
     TextView eventPageDescription;
@@ -63,6 +67,8 @@ public class EventPage extends AppCompatActivity {
     DatabaseReference dbUsers;
     DatabaseReference groupRef;
 
+    String driverID;
+
     GenericTypeIndicator<Map<String, User>> genericTypeIndicator;
 
     List<String> members = new ArrayList<>();
@@ -70,6 +76,9 @@ public class EventPage extends AppCompatActivity {
     Map<String, User> membersMap = new HashMap<>();
     CharSequence[] memberSequence;
 
+    User newUser;
+
+    Button generateRides;
 
 
     private ArrayList<Integer> selectedMembersIndexList;
@@ -93,6 +102,8 @@ public class EventPage extends AppCompatActivity {
         goingSwitch = findViewById(R.id.goingSwitch);
         driverLayout = findViewById(R.id.canDriveLayout);
         driverSwitch = findViewById(R.id.canDriveSwitch);
+        generateRides = findViewById(R.id.generateCarsBtn);
+
 
         // set database reference to the current group
         groupsRef = db.getReference("groups");
@@ -100,6 +111,27 @@ public class EventPage extends AppCompatActivity {
         eventsRef = dbGroup.child("events");
         dbUsers = db.getReference("users");
 
+
+        // query to get the user's driver id
+        eventsRef.child(eventName).child("attendees")
+                .orderByChild("userID")
+                .equalTo(userID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            driverID = ds.child("inCar").getValue().toString();
+                            if (ds.child("eventModerator").getValue(Boolean.class)) {
+                                generateRides.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
         // querying the specific event
 
@@ -172,18 +204,47 @@ public class EventPage extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // add the person to attendees
+                    // can only become a driver if they are going
+                    driverLayout.setVisibility(View.VISIBLE);
                     dbGroup.child("members").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            User user = dataSnapshot.getValue(User.class);
-                            User attendee = new User(false, false, userID, user.getUserName(), user.getPhoneNumber(), user.getAddress());
-                            Map<String, Object> updateAttendee = new HashMap<>();
-                            updateAttendee.put(userID, attendee);
-                            eventsRef.child(eventName).child("attendees").updateChildren(updateAttendee);
+                            newUser = dataSnapshot.getValue(User.class);
+                           // User attendee = new User(false, false, false, userID, newUser.getUserName(), newUser.getPhoneNumber(), newUser.getAddress());
+                           // Map<String, Object> updateAttendee = new HashMap<>();
+                           // updateAttendee.put(userID, attendee);
+                            eventsRef.child(eventName).child("attendees")
+                                    .orderByChild("userID")
+                                    .equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    User tempUser;
+                                    if (dataSnapshot.hasChild(userID)) {
+                                        tempUser = dataSnapshot.child(userID).getValue(User.class);
+                                    }
+                                    else {
+                                        tempUser = new User(false, false, "false", userID, newUser.getUserName(), newUser.getPhoneNumber(), newUser.getAddress());
+                                    }
+                                    Map<String, Object> updateAttendee = new HashMap<>();
+                                    updateAttendee.put(userID, tempUser);
+                                    eventsRef.child(eventName).child("attendees").updateChildren(updateAttendee);
+
+                                    Map<String, Object> updateEvents = new HashMap<>();
+                                    updateEvents.put(eventName, true);
+                                    dbUsers.child(userID).child("groups").child(groupName).child("events").updateChildren(updateEvents);
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                          /*  eventsRef.child(eventName).child("attendees").updateChildren(updateAttendee);
 
                             Map<String, Object> updateEvents = new HashMap<>();
                             updateEvents.put(eventName, true);
-                            dbUsers.child(userID).child("groups").child(groupName).child("events").updateChildren(updateEvents);
+                            dbUsers.child(userID).child("groups").child(groupName).child("events").updateChildren(updateEvents);*/
 
                             // add one to the number of attendees and update the text
 
@@ -200,6 +261,7 @@ public class EventPage extends AppCompatActivity {
                 }
                 else {
                     // delete the person from attendees
+                    driverLayout.setVisibility(View.INVISIBLE);
                     eventsRef.child(eventName).child("attendees").child(userID).getRef().removeValue();
                 }
             }
@@ -220,6 +282,9 @@ public class EventPage extends AppCompatActivity {
         });
 
     }
+
+
+
 
     public void onViewGoingMembers(View view) {
         Query query = eventsRef
@@ -406,5 +471,120 @@ public class EventPage extends AppCompatActivity {
         };
 
         query.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+
+    public void onCreateDialog(View view) {
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(EventPage.this);
+            builderSingle.setIcon(R.drawable.fui_ic_phone_white_24dp);
+            builderSingle.setTitle("Select One Name:-");
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(EventPage.this, android.R.layout.select_dialog_singlechoice);
+            arrayAdapter.add("Hardik");
+            arrayAdapter.add("Archit");
+            arrayAdapter.add("Jignesh");
+            arrayAdapter.add("Umang");
+            arrayAdapter.add("Gatti");
+
+            builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String strName = arrayAdapter.getItem(which);
+                    AlertDialog.Builder builderInner = new AlertDialog.Builder(EventPage.this);
+                    builderInner.setMessage(strName);
+                    builderInner.setTitle("Your Selected Item is");
+                    builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog,int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builderInner.show();
+                }
+            });
+            builderSingle.show();
+        }
+
+
+
+
+
+
+
+
+
+    public void onCreateDriverList (View view) {
+            Query query = eventsRef.child(eventName).child("cars").orderByChild("driverID").equalTo(driverID); //child("attendees").orderByChild("userID").equalTo(userID);
+
+//       final ArrayAdapter<String> userList = new ArrayAdapter<String>(EventPage.this, android.R.layout.select_dialog_singlechoice);
+      final  ArrayList<String> userList = new ArrayList<String>();
+//       ArrayList<String> userList2 = new ArrayList<>(Eve);
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.d("got7", "in ondatachange: " +dataSnapshot.getKey());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EventPage.this);
+                    builder.setTitle("Your Car List");
+                    int i = 0;
+                    //brute force way to get children within children
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        // if driver is true
+                        for (DataSnapshot childrenSnapshot : ds.getChildren()) {
+                            if (childrenSnapshot.hasChildren()) {
+                                Log.d("got7", "in datasnapshot loop: dsKey: " + childrenSnapshot.getKey());
+                                Log.d("got7", "userID: " + childrenSnapshot.getValue(User.class).getUserName());
+                                User user = childrenSnapshot.getValue(User.class);
+                                if (user.getUserID().equals(ds.child("driverID").getValue().toString())) {
+                                    userList.add(0, user.getUserName() + " (Driver)");
+                                } else {
+                                    userList.add(user.getUserName());
+                                }
+                            }
+                        }
+                    }
+                    CharSequence[] cs = userList.toArray(new CharSequence[userList.size()]);
+                    builder.setItems(cs, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+
+            query.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+
+
+
+
+    public void onGenerateCars(View view) {
+        Intent intent = new Intent(this, GenerateCars.class);
+        intent.putExtra("groupName", groupName);
+        intent.putExtra("groupCode", groupCode);
+        intent.putExtra("eventName", eventName);
+        startActivity(intent);
     }
 }
