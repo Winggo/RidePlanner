@@ -6,11 +6,19 @@ public class EventInviteListItem {
     public String groupName;
     public String eventName;
     public String groupCode;
+    public String eventLocation;
 
-    public EventInviteListItem(String groupName, String groupCode, String eventName) {
+    public EventInviteListItem(String groupName, String groupCode, String eventName, String eventLocation) {
         this.groupName = groupName;
         this.eventName = eventName;
         this.groupCode = groupCode;
+        this.eventLocation = eventLocation;
+    }
+
+    public EventInviteListItem(String groupName, String groupCode, String eventName) {
+        this.groupName = groupName;
+        this.groupCode = groupCode;
+        this.eventName = eventName;
     }
 
     public String getGroupName() {
@@ -24,4 +32,9 @@ public class EventInviteListItem {
     public String getGroupCode() {
         return groupCode;
     }
+
+    public String getEventLocation() {
+        return eventLocation;
+    }
+
 }

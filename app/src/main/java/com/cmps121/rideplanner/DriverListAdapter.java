@@ -59,6 +59,7 @@ public class DriverListAdapter extends ArrayAdapter<CarItems> {
         }
 
         car = getItem(position);
+
         final int driverPosition = position;
         TextView driverName = convertView.findViewById(R.id.driverName);
         TextView passengerOne = convertView.findViewById(R.id.passenger1);
@@ -66,21 +67,22 @@ public class DriverListAdapter extends ArrayAdapter<CarItems> {
         TextView passengerThree = convertView.findViewById(R.id.passenger3);
         TextView passengerFour = convertView.findViewById(R.id.passenger4);
         Button addBtn = convertView.findViewById(R.id.addBtn);
+        addBtn.setTag(new Integer(position));
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attendees.clear();
                 attendeeNames.clear();
+                car = getItem((Integer)view.getTag());
              //   final int driverPosition = position;
                 //final CarItems car = (CarItems) adapterView.getAdapter().getItem(position);
-                Query query = dbEvent.child("attendees").orderByChild("inCar").equalTo(false);
+                Query query = dbEvent.child("attendees").orderByChild("inCar").equalTo("false");
 
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            Log.d("Sunday", "adding " +ds.getValue(User.class).getUserName());
                             attendees.add(ds.getValue(User.class));
                         }
 
@@ -101,11 +103,9 @@ public class DriverListAdapter extends ArrayAdapter<CarItems> {
                                         if (isChecked) {
                                             if (!selectedMembersIndexList.contains(which)) {
                                                 selectedMembersIndexList.add(which);
-                                                Log.d("LatestDebug!", "AddedWhich: " + which);
                                             }
                                         } else if (selectedMembersIndexList.contains(which)) {
                                             selectedMembersIndexList.remove(which);
-                                            Log.d("LatestDebug!", "RemovedWhich: " + which);
                                         }
                                     }
                                 })
@@ -132,18 +132,13 @@ public class DriverListAdapter extends ArrayAdapter<CarItems> {
                                                 carUsers = new HashMap<>();
                                                 for (int i = 0; i < selectedMembersIndexList.size(); i++) {
                                                     User tempUser = attendees.get(selectedMembersIndexList.get(i));
-                                                    dbEvent.child("attendees").child(tempUser.getUserID()).child("inCar").setValue(true);
+                                                    dbEvent.child("attendees").child(tempUser.getUserID()).child("inCar").setValue(driverID);
                                                     carUsers.put(tempUser.getUserID(), tempUser);
                                                 }
 
                                                 passengers = new ArrayList<>();
-                                                Log.d("Wow...", "Start of keys");
-                                                for (String key : carUsers.keySet()) {
-                                                    Log.d("Wow...", key);
-                                                }
                                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                                     ds.getRef().updateChildren(carUsers);
-                                                    Log.d("Wow...", "after update: " + ds.getKey());
                                                 }
 
                                                 Query query1 = dbEvent.child("cars")
@@ -154,9 +149,7 @@ public class DriverListAdapter extends ArrayAdapter<CarItems> {
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                                             for (DataSnapshot childSnapshot : ds.getChildren()) {
-                                                                Log.d("Wow...", childSnapshot.getKey());
                                                                 if (childSnapshot.hasChildren() && !childSnapshot.getValue(User.class).getUserID().equals(driverID)) {
-                                                                    Log.d("Wow...", childSnapshot.getValue(User.class).getUserName());
                                                                     passengers.add(childSnapshot.getValue(User.class).getUserName());
                                                                 }
                                                             }
@@ -179,16 +172,6 @@ public class DriverListAdapter extends ArrayAdapter<CarItems> {
 
                                                     }
                                                 });
-                                             /*   while (passengers.size() < 4) {
-                                                    passengers.add("Empty");
-                                                }
-
-                                                cars.set(driverPosition, new CarItems(driverUsers.get(driverPosition).getUserName(), passengers));
-                                                for (int i = 0; i < isSelectedArray.length; i++) {
-                                                    isSelectedArray[i] = false;
-                                                }
-                                                selectedMembersIndexList.clear();
-                                                notifyDataSetChanged();*/
                                             }
 
                                             @Override

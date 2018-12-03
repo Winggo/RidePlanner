@@ -133,7 +133,16 @@
             android:layout_marginTop="30dp"
             android:onClick="onGenerateCars"
             android:text="Generate Cars"
+            android:visibility="gone"
             android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="122dp"
+            android:layout_height="wrap_content"
+            android:onClick="onCreateDriverList"
+            android:textAllCaps="false"
+            android:text="View My Car" />
 
     </LinearLayout>
 

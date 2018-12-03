@@ -11,7 +11,7 @@ public class User {
     Boolean eventModerator;
     Boolean driver;
     Boolean profileCreated;
-    Boolean inCar;
+    String inCar;
     HashMap<String, Boolean> groups;
 
     public User() {
@@ -48,7 +48,7 @@ public class User {
     }
 
     // user constructor to be used in events
-    public User(Boolean eventModerator, Boolean driver, Boolean inCar, String userID, String userName, String phoneNumber, String address) {
+    public User(Boolean eventModerator, Boolean driver, String inCar, String userID, String userName, String phoneNumber, String address) {
         this.userID = userID;
         this.userName = userName;
         this.phoneNumber = phoneNumber;

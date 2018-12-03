@@ -25,6 +25,7 @@ public class GenerateCars extends AppCompatActivity {
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference dbEvent;
+    Downloader down = new Downloader();
 
     TextView groupTitleView;
     TextView eventTitleView;
@@ -82,30 +83,23 @@ public class GenerateCars extends AppCompatActivity {
         dbEvent.child("attendees").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("Testing","Attendees");
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                    Log.d("Testing", ds.child("userName").getValue().toString());
                     // if they're a driver, add it to driver list. otherwise, add it to normal attendees
                     if (ds.child("driver").getValue(Boolean.class)) {
-                        Log.d("Sunday", "ugh: " +ds.getValue(User.class).getUserName());
                         driverUsers.add(ds.getValue(User.class));
                         HashMap<String, Object> tempDriver = new HashMap<>();
-                        ds.child("inCar").getRef().setValue(true);
+                        ds.child("inCar").getRef().setValue(ds.getValue(User.class).getUserID());
                         tempDriver.put(ds.getValue(User.class).getUserID(), ds.getValue(User.class));
 
                         String pushedKey = dbEvent.child("cars").push().getKey();
                         tempDriver.put("driverID", ds.getValue(User.class).getUserID());
-                        for (String key : tempDriver.keySet()) {
-                            Log.d("Sunday", key);
-                        }
                         dbEvent.child("cars").child(pushedKey).updateChildren(tempDriver);
 
                         carLOL.add(new CarItems(ds.getValue(User.class).getUserName(), "Empty", "Empty", "Empty", "Empty"));
-                        Log.d("Testing", "Driver: " + ds.child("userName").getValue().toString());
+
                     }
                     else {
-                        Log.d("Testing", "Attendees: " + ds.child("userName").getValue().toString());
                         attendees.add(ds.getValue(User.class));
                     }
                 }
