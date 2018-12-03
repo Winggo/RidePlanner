@@ -1,9 +1,14 @@
 package com.cmps121.rideplanner;
 
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +19,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GenerateCars extends AppCompatActivity {
 
@@ -23,21 +29,32 @@ public class GenerateCars extends AppCompatActivity {
     TextView groupTitleView;
     TextView eventTitleView;
 
+    ListView driverView;
+
     String groupName;
     String eventName;
     String groupCode;
+    DriverListAdapter adapter;
 
     /* an arraylist of users so that we can get userID and other info if needed.
     * check my EventInviteListItem and EventInviteAdapter for example of
     * just displaying the name of the group
     * without displaying the groupCode*/
-    ArrayList<User> drivers;
+    ArrayList<User> driverUsers;
+    ArrayList<String> passengers;
+
+    final ArrayList<CarItems> carLOL = new ArrayList<>();
+    HashMap<String, Object> carUsers;
     ArrayList<User> attendees;
+    ArrayList<String> attendeeNames;
+    ArrayList<Integer> selectedMembersIndexList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate_cars);
+
+        driverView = findViewById(R.id.driverView);
 
         groupName = getIntent().getStringExtra("groupName");
         eventName = getIntent().getStringExtra("eventName");
@@ -49,13 +66,18 @@ public class GenerateCars extends AppCompatActivity {
         groupTitleView.setText(groupName);
         eventTitleView.setText(eventName);
 
-        drivers = new ArrayList<>();
-        attendees = new ArrayList<>();
+        selectedMembersIndexList = new ArrayList<>();
 
+     //   car = new ArrayList<>();
+        driverUsers = new ArrayList<>();
+        attendees = new ArrayList<>();
+        attendeeNames = new ArrayList<>();
+
+        ArrayList<String> carPushKeys = new ArrayList<>();
         // get the reference to the event we are generating cars in
         dbEvent = db.getReference("groups").child(groupCode).child("events").child(eventName);
 
-        // query all attendeess
+        // query all attendees
 
         dbEvent.child("attendees").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -66,7 +88,20 @@ public class GenerateCars extends AppCompatActivity {
                     Log.d("Testing", ds.child("userName").getValue().toString());
                     // if they're a driver, add it to driver list. otherwise, add it to normal attendees
                     if (ds.child("driver").getValue(Boolean.class)) {
-                        drivers.add(ds.getValue(User.class));
+                        Log.d("Sunday", "ugh: " +ds.getValue(User.class).getUserName());
+                        driverUsers.add(ds.getValue(User.class));
+                        HashMap<String, Object> tempDriver = new HashMap<>();
+                        ds.child("inCar").getRef().setValue(true);
+                        tempDriver.put(ds.getValue(User.class).getUserID(), ds.getValue(User.class));
+
+                        String pushedKey = dbEvent.child("cars").push().getKey();
+                        tempDriver.put("driverID", ds.getValue(User.class).getUserID());
+                        for (String key : tempDriver.keySet()) {
+                            Log.d("Sunday", key);
+                        }
+                        dbEvent.child("cars").child(pushedKey).updateChildren(tempDriver);
+
+                        carLOL.add(new CarItems(ds.getValue(User.class).getUserName(), "Empty", "Empty", "Empty", "Empty"));
                         Log.d("Testing", "Driver: " + ds.child("userName").getValue().toString());
                     }
                     else {
@@ -74,6 +109,13 @@ public class GenerateCars extends AppCompatActivity {
                         attendees.add(ds.getValue(User.class));
                     }
                 }
+
+                for (int i = 0; i < attendees.size(); i++) {
+                    attendeeNames.add(attendees.get(i).getUserName());
+                }
+
+                adapter = new DriverListAdapter(GenerateCars.this, carLOL, groupCode, groupName, eventName, driverUsers, dbEvent);
+                driverView.setAdapter(adapter);
 
                 /* everything that you do to display this list of drivers or attendees must be done in this
                  * onDataChange method. Firebase does its queries ASYNC and if you try to do it

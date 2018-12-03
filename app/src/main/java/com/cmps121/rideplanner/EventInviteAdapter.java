@@ -1,5 +1,6 @@
 package com.cmps121.rideplanner;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -46,6 +47,8 @@ public class EventInviteAdapter extends ArrayAdapter<EventInviteListItem> {
                 String groupCodeStr = eventInviteListItem.getGroupCode();
                 String eventNameStr = eventInviteListItem.getEventName();
                 remove(getItem(position));
+
+
                 notifyDataSetChanged();
                 FirebaseDatabase.getInstance().getReference("users").child(userID).child("eventInvites").
                         child(groupCodeStr).child("events").child(eventNameStr).removeValue();

@@ -97,7 +97,7 @@ public class CreateEventPopUp extends AppCompatActivity {
 
     public void onCreateEventBtn(View view) {
         Map<String, User> attendees = new HashMap<>();
-        User user = new User(true, false, userID, userName, userPhoneNumber, userAddress);
+        User user = new User(true, false, false, userID, userName, userPhoneNumber, userAddress);
         attendees.put(userID, user);
 
         eventName = eventNameInput.getText().toString();

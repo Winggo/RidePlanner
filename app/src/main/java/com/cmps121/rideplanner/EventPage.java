@@ -71,6 +71,7 @@ public class EventPage extends AppCompatActivity {
     Map<String, User> membersMap = new HashMap<>();
     CharSequence[] memberSequence;
 
+    User newUser;
 
 
     private ArrayList<Integer> selectedMembersIndexList;
@@ -173,18 +174,47 @@ public class EventPage extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // add the person to attendees
+                    // can only become a driver if they are going
+                    driverLayout.setVisibility(View.VISIBLE);
                     dbGroup.child("members").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            User user = dataSnapshot.getValue(User.class);
-                            User attendee = new User(false, false, userID, user.getUserName(), user.getPhoneNumber(), user.getAddress());
-                            Map<String, Object> updateAttendee = new HashMap<>();
-                            updateAttendee.put(userID, attendee);
-                            eventsRef.child(eventName).child("attendees").updateChildren(updateAttendee);
+                            newUser = dataSnapshot.getValue(User.class);
+                           // User attendee = new User(false, false, false, userID, newUser.getUserName(), newUser.getPhoneNumber(), newUser.getAddress());
+                           // Map<String, Object> updateAttendee = new HashMap<>();
+                           // updateAttendee.put(userID, attendee);
+                            eventsRef.child(eventName).child("attendees")
+                                    .orderByChild("userID")
+                                    .equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    User tempUser;
+                                    if (dataSnapshot.hasChild(userID)) {
+                                        tempUser = dataSnapshot.child(userID).getValue(User.class);
+                                    }
+                                    else {
+                                        tempUser = new User(false, false, false, userID, newUser.getUserName(), newUser.getPhoneNumber(), newUser.getAddress());
+                                    }
+                                    Map<String, Object> updateAttendee = new HashMap<>();
+                                    updateAttendee.put(userID, tempUser);
+                                    eventsRef.child(eventName).child("attendees").updateChildren(updateAttendee);
+
+                                    Map<String, Object> updateEvents = new HashMap<>();
+                                    updateEvents.put(eventName, true);
+                                    dbUsers.child(userID).child("groups").child(groupName).child("events").updateChildren(updateEvents);
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                          /*  eventsRef.child(eventName).child("attendees").updateChildren(updateAttendee);
 
                             Map<String, Object> updateEvents = new HashMap<>();
                             updateEvents.put(eventName, true);
-                            dbUsers.child(userID).child("groups").child(groupName).child("events").updateChildren(updateEvents);
+                            dbUsers.child(userID).child("groups").child(groupName).child("events").updateChildren(updateEvents);*/
 
                             // add one to the number of attendees and update the text
 
@@ -201,6 +231,7 @@ public class EventPage extends AppCompatActivity {
                 }
                 else {
                     // delete the person from attendees
+                    driverLayout.setVisibility(View.INVISIBLE);
                     eventsRef.child(eventName).child("attendees").child(userID).getRef().removeValue();
                 }
             }
