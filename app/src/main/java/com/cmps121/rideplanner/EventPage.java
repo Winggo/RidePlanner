@@ -609,6 +609,7 @@ public class EventPage extends AppCompatActivity {
                                     //going to leaave out distances from event and time it would take feature out until further notice.
 //                                    userList.add(user.getUserName()+ holdTheamount);
                                     userList.add(user.getUserName()+ "\nAddress: " +user.getAddress());
+                                    addressButtonHolder.add(user.getAddress());
                             }
                             }
                         }

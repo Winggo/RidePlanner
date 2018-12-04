@@ -1,6 +1,7 @@
 package com.cmps121.rideplanner;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -131,6 +132,16 @@ public class GenerateCars extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void onDoneBtn(View view) {
+        Intent intent = new Intent(this, EventPage.class);
+
+        intent.putExtra("eventName", eventName);
+        intent.putExtra("groupName", groupName);
+        intent.putExtra("groupCode", groupCode);
+
+        startActivity(intent);
     }
 
 }
