@@ -10,9 +10,10 @@
         android:id="@+id/addBtn"
         android:layout_width="37dp"
         android:layout_height="34dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/featuresColor"
         android:fontFamily="@font/heebo_thin"
-        android:text="+" />
+        android:text="+"
+        android:textColor="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/driverName"
@@ -20,7 +21,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/heebo_thin"
         android:text="Name"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/featuresColor" />
 
     <TextView
         android:id="@+id/passenger1"
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/heebo_thin"
         android:text="Empty"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/featuresColor" />
 
     <TextView
         android:id="@+id/passenger2"
@@ -36,7 +37,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/heebo_thin"
         android:text="Empty"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/featuresColor" />
 
     <TextView
         android:id="@+id/passenger3"
@@ -44,7 +45,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/heebo_thin"
         android:text="Empty"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/featuresColor" />
 
     <TextView
         android:id="@+id/passenger4"
@@ -52,7 +53,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/heebo_thin"
         android:text="Empty"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/featuresColor" />
 
 
 </LinearLayout>
