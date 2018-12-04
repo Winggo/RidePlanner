@@ -16,31 +16,41 @@
         android:id="@+id/driverName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:fontFamily="@font/heebo_thin"
+        android:text="Name"
+        android:textColor="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/passenger1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Empty" />
+        android:fontFamily="@font/heebo_thin"
+        android:text="Empty"
+        android:textColor="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/passenger2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Empty" />
+        android:fontFamily="@font/heebo_thin"
+        android:text="Empty"
+        android:textColor="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/passenger3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Empty" />
+        android:fontFamily="@font/heebo_thin"
+        android:text="Empty"
+        android:textColor="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/passenger4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Empty" />
+        android:fontFamily="@font/heebo_thin"
+        android:text="Empty"
+        android:textColor="@color/colorPrimaryDark" />
 
 
 </LinearLayout>

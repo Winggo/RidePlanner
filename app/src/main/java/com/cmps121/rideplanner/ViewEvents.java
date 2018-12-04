@@ -157,9 +157,6 @@ public class ViewEvents extends AppCompatActivity implements AdapterView.OnItemC
                             Intent intent5 = new Intent(getBaseContext(), EditProfile.class);
                             startActivity(intent5);
                             return true;
-//                        case R.id.logout:
-//                            signOut(getWindow().getDecorView().getRootView());
-//                            return true;
                     }
                     return false;
                 }
