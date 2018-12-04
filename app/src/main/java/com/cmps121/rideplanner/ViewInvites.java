@@ -68,7 +68,7 @@ public class ViewInvites extends AppCompatActivity {
                         events.add(event);
                     }
                 }
-                EventInviteAdapter adapter = new EventInviteAdapter(getApplicationContext(), events);
+                EventInviteAdapter adapter = new EventInviteAdapter(ViewInvites.this, events);
 
                 listView = findViewById(R.id.invitesList);
                 listView.setAdapter(adapter);
