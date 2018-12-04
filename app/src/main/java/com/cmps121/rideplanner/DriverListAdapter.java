@@ -87,7 +87,7 @@ public class DriverListAdapter extends ArrayAdapter<CarItems> {
                         }
 
                         for (int i = 0; i < attendees.size(); i++) {
-                            attendeeNames.add(attendees.get(i).getUserName());
+                            attendeeNames.add("\n"+attendees.get(i).getUserName() + "\n\nAddress: " +attendees.get(i).getAddress() +"\n");
                         }
 
                         final boolean[] isSelectedArray = new boolean[attendeeNames.size()];
@@ -103,9 +103,11 @@ public class DriverListAdapter extends ArrayAdapter<CarItems> {
                                         if (isChecked) {
                                             if (!selectedMembersIndexList.contains(which)) {
                                                 selectedMembersIndexList.add(which);
+                                                Log.d("agh", "ADDED: " +which);
                                             }
                                         } else if (selectedMembersIndexList.contains(which)) {
-                                            selectedMembersIndexList.remove(which);
+                                            selectedMembersIndexList.remove(Integer.valueOf(which));
+                                            Log.d("agh", "REMOVED: " +which);
                                         }
                                     }
                                 })
