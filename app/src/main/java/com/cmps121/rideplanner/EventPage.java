@@ -523,9 +523,7 @@ public class EventPage extends AppCompatActivity {
     public void onCreateDriverList (View view) {
             Query query = eventsRef.child(eventName).child("cars").orderByChild("driverID").equalTo(driverID); //child("attendees").orderByChild("userID").equalTo(userID);
 
-//       final ArrayAdapter<String> userList = new ArrayAdapter<String>(EventPage.this, android.R.layout.select_dialog_singlechoice);
-      final  ArrayList<String> userList = new ArrayList<String>();
-//       ArrayList<String> userList2 = new ArrayList<>(Eve);
+            final  ArrayList<String> userList = new ArrayList<String>();
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
