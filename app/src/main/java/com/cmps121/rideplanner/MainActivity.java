@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser() != null) {
-
             inviteCount = 0;
 
             // user has already signed in
@@ -89,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         else {
+            Log.d("helpppp", "else create sign in intent");
             createSignInIntent();
         }
 
@@ -166,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createSignInIntent() {
+        Log.d("helpppp", "creating sign in intent");
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -189,12 +190,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
+            Log.d("helpppp", "if rc_sign_in");
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 user = FirebaseAuth.getInstance().getCurrentUser();
+                Log.d("helpppp", "nooo");
                 userID = user.getUid();
-                dbUsers = db.getReference("users");
+                dbUsers = db.getReference().child("users");
                 dbUsers.orderByChild("userID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
