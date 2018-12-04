@@ -45,6 +45,8 @@ public class EventPage extends AppCompatActivity {
     String userName;
     String invitedUserID;
 
+    static String holdTheamount;
+
     static boolean areDriver = false;
     TextView eventPageGroupTitle;
     TextView eventPageEventTitle;
@@ -77,7 +79,9 @@ public class EventPage extends AppCompatActivity {
     CharSequence[] memberSequence;
 
     User newUser;
-
+    //need to fix
+    Event event;
+    Downloader dwn = new Downloader();
     Button generateRides;
 
 
@@ -544,11 +548,16 @@ public class EventPage extends AppCompatActivity {
                                 if (user.getUserID().equals(ds.child("driverID").getValue().toString())) {
                                     userList.add(0, user.getUserName() + " (Driver)");
                                 } else {
-                                    userList.add(user.getUserName());
+                                    userList.add(user.getUserName()+ dwn.execute(event.getEventLocation(), user.getAddress()));
                                 }
                             }
                         }
                     }
+    //sample data
+                    userList.add("Total Estimated Time of Trip - OVER 9000HOURS");
+                    userList.add("Bob Ross 2.1 Miles Away");
+                    dwn.execute("1156 High St, Santa Cruz, CA", "709 Pacific Ave, Santa Cruz, CA");
+                    userList.add("James Comey "+  holdTheamount);
                     CharSequence[] cs = userList.toArray(new CharSequence[userList.size()]);
                     builder.setItems(cs, new DialogInterface.OnClickListener() {
                         @Override

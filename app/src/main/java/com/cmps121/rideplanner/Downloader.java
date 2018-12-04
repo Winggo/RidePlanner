@@ -28,7 +28,7 @@ public class Downloader  extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... strings) {
 
-        for(int i =0; i<=strings.length; i++){
+        for(int i =0; i<strings.length; i++){
             strings[i] = strings[i].replaceAll("[ ]", "+");
 
         }
@@ -70,9 +70,10 @@ public class Downloader  extends AsyncTask<String, Void, String> {
         //grabbing the time
         int wheretime = s.indexOf("duration");
         int wheretime1 = s.indexOf("}");
-        String time= Integer.parseInt(s.substring(where, where1).replaceAll("[^\\d.]", ""))/60 + "minutes from event";;
+        String time= Double.parseDouble(s.substring(where, where1).replaceAll("[^\\d.]", ""))/60 + "minutes from event";;
         super.onPostExecute(newww + "||" + time);
-
+        EventPage pg= new EventPage();
+        pg.holdTheamount = newww + "||" + time;
 
 //        MainActivity.textView.setText(newww);
 

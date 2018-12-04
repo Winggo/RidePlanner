@@ -14,4 +14,8 @@ public class Event {
         this.eventLocation = eventLocation;
         this.attendees = attendees;
     }
+
+    public String getEventLocation() {
+        return eventLocation;
+    }
 }
