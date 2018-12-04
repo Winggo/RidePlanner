@@ -60,15 +60,22 @@
             android:name=".EventPage"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".JoinCreateGroup"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ViewMembers"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
+            android:name=".ViewInvites"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GenerateCars"
             android:theme="@style/Theme.AppCompat.Dialog" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".ViewInvites" />
-        <activity android:name=".GenerateCars"></activity>
     </application>
 
 </manifest>

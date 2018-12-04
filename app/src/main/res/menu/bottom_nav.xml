@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mainActivity"
+        android:icon="@drawable/home" />
+
+    <item
+        android:id="@+id/joinCreateGroups"
+        android:icon="@drawable/create_group" />
+
+    <item
+        android:id="@+id/viewInvites"
+        android:icon="@drawable/join_group" />
+
+    <item
+        android:id="@+id/existingGroups"
+        android:icon="@drawable/existing_groups" />
+
+    <item
+        android:id="@+id/editProfile"
+        android:icon="@drawable/profile" />
+
+    <!--<item-->
+        <!--android:id="@+id/logout"-->
+        <!--android:title="Logout" />-->
+</menu>

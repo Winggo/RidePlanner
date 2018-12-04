@@ -2,9 +2,13 @@ package com.cmps121.rideplanner;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,6 +39,8 @@ public class ViewEvents extends AppCompatActivity implements AdapterView.OnItemC
     String userID;
     String groupName;
     String groupCode;
+    // ACTION BAR
+    private ActionBar toolbar;
 
     GenericTypeIndicator<Map<String, Boolean>> genericTypeIndicator;
     Map<String, Boolean> eventsMap;
@@ -46,6 +52,11 @@ public class ViewEvents extends AppCompatActivity implements AdapterView.OnItemC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_events);
+
+        // ACTION BAR
+        toolbar = getSupportActionBar();
+        BottomNavigationView nav = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        nav.setOnNavigationItemSelectedListener(bottomListener);
 
         // initialize the instances of db and current user
         db = FirebaseDatabase.getInstance();
@@ -95,7 +106,18 @@ public class ViewEvents extends AppCompatActivity implements AdapterView.OnItemC
                 }
 
                 // display this list
-                ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, events);
+                ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, events) {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        View view = super.getView(position, convertView, parent);
+                        TextView text = (TextView)view.findViewById(android.R.id.text1);
+                        text.setTextColor(getResources().getColor(R.color.featuresColor));
+                       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            text.setTypeface(getResources().getFont(R.font.heebo_thin));
+                        }*/
+                        return view;
+                    }
+                };
                 eventsList.setAdapter(adapter);
             }
 
@@ -108,6 +130,40 @@ public class ViewEvents extends AppCompatActivity implements AdapterView.OnItemC
         // perform query and fetch data
         query.addListenerForSingleValueEvent(valueEventListener);
     }
+
+    // ACTION BAR
+    private BottomNavigationView.OnNavigationItemSelectedListener bottomListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    switch(menuItem.getItemId()){
+                        case R.id.mainActivity:
+                            Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                            startActivity(intent);
+                            return true;
+                        case R.id.joinCreateGroups:
+                            Intent intent2 = new Intent(getBaseContext(), JoinCreateGroup.class);
+                            startActivity(intent2);
+                            return true;
+                        case R.id.existingGroups:
+                            Intent intent3 = new Intent(getBaseContext(), ViewGroups.class);
+                            startActivity(intent3);
+                            return true;
+                        case R.id.viewInvites:
+                            Intent intent4 = new Intent(getBaseContext(), ViewInvites.class);
+                            startActivity(intent4);
+                            return true;
+                        case R.id.editProfile:
+                            Intent intent5 = new Intent(getBaseContext(), EditProfile.class);
+                            startActivity(intent5);
+                            return true;
+//                        case R.id.logout:
+//                            signOut(getWindow().getDecorView().getRootView());
+//                            return true;
+                    }
+                    return false;
+                }
+            };
 
     @Override
     public void onItemClick(AdapterView<?> list, View view, int position, long id) {
