@@ -90,6 +90,7 @@ public class EventPage extends AppCompatActivity {
     Event event;
     Downloader dwn = new Downloader();
     Button generateRides;
+    String eventLocation;
 
     // ACTION BAR
     private ActionBar toolbar;
@@ -166,6 +167,7 @@ public class EventPage extends AppCompatActivity {
                     // grabbing the event description
                     eventDescription = ds.child("eventDescription").getValue().toString();
                     event = ds.getValue(Event.class);
+                    eventLocation = event.getEventLocation();
                     // counting the number of attendees
                     numAttendees = (int) ds.child("attendees").getChildrenCount();
                     // if our current user is attending the event, set switch to true
@@ -596,13 +598,14 @@ public class EventPage extends AppCompatActivity {
                              //   Event event = childrenSnapshot.getValue(Event.class);
 
                                 if (user.getUserID().equals(ds.child("driverID").getValue().toString())) {
-                                    justHoldmyAddress = event.getEventLocation();
+                                    Log.d("agh", "... " +event.getEventLocation());
+                                //    justHoldmyAddress = eventLocation;
                                     userList.add(0, user.getUserName() + " (Driver)");
                                     addressButtonHolder.add(user.getAddress());
                                 } else {
-                                    justHoldmyAddress = event.getEventLocation();
+                                //    justHoldmyAddress = eventLocation;
                                     dwn = new Downloader();
-                                    dwn.execute(event.getEventLocation(), user.getAddress());
+                                    dwn.execute(eventLocation, user.getAddress());
                                     //going to leaave out distances from event and time it would take feature out until further notice.
 //                                    userList.add(user.getUserName()+ holdTheamount);
                                     userList.add(user.getUserName()+ "\nAddress: " +user.getAddress());
@@ -648,7 +651,7 @@ public class EventPage extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
-                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/?api=1&query="+ justHoldmyAddress));
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/?api=1&query="+ eventLocation));
                                 startActivity(browserIntent);
                                 dialog.dismiss();
                             } catch (ActivityNotFoundException e) {
