@@ -18,7 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
+            android:fontFamily="@font/heebo_thin"
+            android:paddingTop="50dp"
             android:text="Placeholder"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,9 +35,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ellipsize="end"
+            android:fontFamily="@font/heebo_thin"
             android:lines="1"
             android:scrollHorizontally="true"
             android:text="Placeholder"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +48,7 @@
             app:layout_constraintTop_toBottomOf="@+id/eventPageGroupTitle" />
 
         <LinearLayout
-            android:layout_width="225dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:orientation="horizontal">
@@ -55,9 +60,11 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:clickable="true"
+                android:fontFamily="@font/heebo_thin"
                 android:gravity="center_vertical"
                 android:onClick="onViewGoingMembers"
                 android:text="x people going"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -69,14 +76,16 @@
 
                 <TextView
                     android:id="@+id/goingText"
-                    android:layout_width="62dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Going?" />
+                    android:fontFamily="@font/heebo_thin"
+                    android:text="Going?"
+                    android:textColor="@color/colorPrimaryDark" />
 
                 <Switch
                     android:id="@+id/goingSwitch"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -85,7 +94,7 @@
 
         <LinearLayout
             android:id="@+id/canDriveLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:orientation="horizontal"
@@ -97,7 +106,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="Can you drive?" />
+                android:fontFamily="@font/heebo_thin"
+                android:text="Can you drive?"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
 
             <Switch
                 android:id="@+id/canDriveSwitch"
@@ -112,6 +124,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
             android:gravity="center"
+            android:fontFamily="@font/heebo_thin"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -119,30 +133,67 @@
 
         <Button
             android:id="@+id/inviteFriendsBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:background="@color/colorPrimaryDark"
+            android:fontFamily="@font/heebo_thin"
             android:onClick="onInviteFriends"
             android:text="Invite Friends"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/generateCarsBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/heebo_thin"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:onClick="onGenerateCars"
             android:text="Generate Cars"
             android:visibility="gone"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="122dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@color/colorPrimaryDark"
+            android:fontFamily="@font/heebo_thin"
             android:onClick="onCreateDriverList"
+            android:text="View My Car"
             android:textAllCaps="false"
-            android:text="View My Car" />
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="0"
+            android:background="@color/colorPrimary"
+            android:gravity="bottom"
+            app:itemIconTint="@color/colorPrimaryDark"
+            app:itemTextColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_nav" />
 
     </LinearLayout>
 

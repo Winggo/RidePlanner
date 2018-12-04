@@ -4,13 +4,16 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -80,6 +83,9 @@ public class EventPage extends AppCompatActivity {
 
     Button generateRides;
 
+    // ACTION BAR
+    private ActionBar toolbar;
+
 
     private ArrayList<Integer> selectedMembersIndexList;
 
@@ -87,6 +93,12 @@ public class EventPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_page);
+
+        // ACTION BAR
+        toolbar = getSupportActionBar();
+        BottomNavigationView nav = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        nav.setOnNavigationItemSelectedListener(bottomListener);
+
         db = FirebaseDatabase.getInstance();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -283,7 +295,36 @@ public class EventPage extends AppCompatActivity {
 
     }
 
-
+    // ACTION BAR
+    private BottomNavigationView.OnNavigationItemSelectedListener bottomListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    switch(menuItem.getItemId()){
+                        case R.id.mainActivity:
+                            Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                            startActivity(intent);
+                            return true;
+                        case R.id.joinCreateGroups:
+                            Intent intent2 = new Intent(getBaseContext(), JoinCreateGroup.class);
+                            startActivity(intent2);
+                            return true;
+                        case R.id.existingGroups:
+                            Intent intent3 = new Intent(getBaseContext(), ViewGroups.class);
+                            startActivity(intent3);
+                            return true;
+                        case R.id.viewInvites:
+                            Intent intent4 = new Intent(getBaseContext(), ViewInvites.class);
+                            startActivity(intent4);
+                            return true;
+                        case R.id.editProfile:
+                            Intent intent5 = new Intent(getBaseContext(), EditProfile.class);
+                            startActivity(intent5);
+                            return true;
+                    }
+                    return false;
+                }
+            };
 
 
     public void onViewGoingMembers(View view) {
