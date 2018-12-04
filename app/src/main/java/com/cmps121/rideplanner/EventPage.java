@@ -1,8 +1,11 @@
 package com.cmps121.rideplanner;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +21,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +48,8 @@ public class EventPage extends AppCompatActivity {
     String userID;
     String userName;
     String invitedUserID;
+
+    static String holdTheamount;
 
     static boolean areDriver = false;
     TextView eventPageGroupTitle;
@@ -77,7 +83,9 @@ public class EventPage extends AppCompatActivity {
     CharSequence[] memberSequence;
 
     User newUser;
-
+    //need to fix
+    Event event;
+    Downloader dwn = new Downloader();
     Button generateRides;
 
 
@@ -145,7 +153,7 @@ public class EventPage extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     // grabbing the event description
                     eventDescription = ds.child("eventDescription").getValue().toString();
-
+                    event = ds.getValue(Event.class);
                     // counting the number of attendees
                     numAttendees = (int) ds.child("attendees").getChildrenCount();
                     // if our current user is attending the event, set switch to true
@@ -518,12 +526,14 @@ public class EventPage extends AppCompatActivity {
 
 
 
-
+    static String justHoldmyAddress;
 
     public void onCreateDriverList (View view) {
-            Query query = eventsRef.child(eventName).child("cars").orderByChild("driverID").equalTo(driverID); //child("attendees").orderByChild("userID").equalTo(userID);
+            Query query = eventsRef.child(eventName).child("cars").orderByChild("driverID").equalTo(driverID);
 
             final  ArrayList<String> userList = new ArrayList<String>();
+            final  ArrayList<String> addressButtonHolder = new ArrayList<>();
+
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -531,30 +541,81 @@ public class EventPage extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EventPage.this);
                     builder.setTitle("Your Car List");
                     int i = 0;
+
                     //brute force way to get children within children
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         // if driver is true
+                        Log.d("got7", "dskey: " + ds.getKey());
                         for (DataSnapshot childrenSnapshot : ds.getChildren()) {
+
                             if (childrenSnapshot.hasChildren()) {
                                 Log.d("got7", "in datasnapshot loop: dsKey: " + childrenSnapshot.getKey());
                                 Log.d("got7", "userID: " + childrenSnapshot.getValue(User.class).getUserName());
                                 User user = childrenSnapshot.getValue(User.class);
+                             //   Event event = childrenSnapshot.getValue(Event.class);
+
                                 if (user.getUserID().equals(ds.child("driverID").getValue().toString())) {
+                                    justHoldmyAddress = event.getEventLocation();
                                     userList.add(0, user.getUserName() + " (Driver)");
+                                    addressButtonHolder.add(user.getAddress());
                                 } else {
-                                    userList.add(user.getUserName());
-                                }
+                                    justHoldmyAddress = event.getEventLocation();
+                                    dwn = new Downloader();
+                                    dwn.execute(event.getEventLocation(), user.getAddress());
+                                    userList.add(user.getUserName()+ holdTheamount);
+                            }
                             }
                         }
                     }
+    //sample data
+//                    userList.add("Total Estimated Time of Trip - OVER 9000HOURS");
+//                    userList.add("Bob Ross 2.1 Miles Away");
+//                    dwn.execute("1156 High St, Santa Cruz, CA", "709 Pacific Ave, Santa Cruz, CA");
+//                    userList.add("James Comey "+  holdTheamount);
                     CharSequence[] cs = userList.toArray(new CharSequence[userList.size()]);
                     builder.setItems(cs, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/?api=1&query=" + addressButtonHolder.get(which)));
+                                startActivity(browserIntent);
+                                dialog.dismiss();
+                            } catch (ActivityNotFoundException e) {
+                                Toast.makeText(EventPage.this, "No application can handle this request." + " Please install a webbrowser or Google Maps",  Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
+                            }
 
                         }
                     });
-                    builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton("Route to UCSC", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/?api=1&query=1156 High St, Santa Cruz, CA 95064"));
+                                startActivity(browserIntent);
+                                dialog.dismiss();
+                            } catch (ActivityNotFoundException e) {
+                                Toast.makeText(EventPage.this, "No application can handle this request." + " Please install a webbrowser or Google Maps",  Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("Route to event", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/?api=1&query="+ justHoldmyAddress));
+                                startActivity(browserIntent);
+                                dialog.dismiss();
+                            } catch (ActivityNotFoundException e) {
+                                Toast.makeText(EventPage.this, "No application can handle this request." + " Please install a webbrowser or Google Maps",  Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();

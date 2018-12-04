@@ -8,10 +8,16 @@ public class Event {
     public String eventLocation;
     public Map<String, User> attendees;
 
+    public Event(){}
+
     public Event(String eventName, String eventDescription, String eventLocation, Map<String, User> attendees) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.eventLocation = eventLocation;
         this.attendees = attendees;
+    }
+
+    public String getEventLocation() {
+        return eventLocation;
     }
 }
