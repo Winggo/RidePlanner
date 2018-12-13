@@ -8,12 +8,14 @@
 
     <Button
         android:id="@+id/addBtn"
-        android:layout_width="37dp"
-        android:layout_height="34dp"
-        android:background="@color/featuresColor"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@color/fui_bgGoogle"
         android:fontFamily="@font/heebo_thin"
         android:text="+"
-        android:textColor="@color/colorPrimary" />
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/driverName"
@@ -21,7 +23,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/heebo_thin"
         android:text="Name"
-        android:textColor="@color/featuresColor" />
+        android:textColor="@color/fui_bgGoogle"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/passenger1"
@@ -29,7 +33,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/heebo_thin"
         android:text="Empty"
-        android:textColor="@color/featuresColor" />
+        android:textColor="@color/fui_bgGoogle"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/passenger2"
@@ -37,7 +42,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/heebo_thin"
         android:text="Empty"
-        android:textColor="@color/featuresColor" />
+        android:textColor="@color/fui_bgGoogle"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/passenger3"
@@ -45,7 +51,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/heebo_thin"
         android:text="Empty"
-        android:textColor="@color/featuresColor" />
+        android:textColor="@color/fui_bgGoogle"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/passenger4"
@@ -53,7 +60,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/heebo_thin"
         android:text="Empty"
-        android:textColor="@color/featuresColor" />
+        android:textColor="@color/fui_bgGoogle"
+        android:textSize="18sp" />
 
 
 </LinearLayout>
